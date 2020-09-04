@@ -1,0 +1,1 @@
+const API_ENDPOINT = process.env.BACKEND_API;// api叩くときはAPI_ENDPOINT/roomとかで
