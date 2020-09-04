@@ -26,12 +26,12 @@ mysql/client:
 mysql/init:
 	docker-compose exec $(DB_SERVICE) \
 		mysql -u root -h localhost -ppassword \
-		-e "create database `$(DBNAME)`"
+		-e "create database \`$(DBNAME)\`"
 
 __mysql/drop:
 	docker-compose exec $(DB_SERVICE) \
 		mysql -u root -h localhost -ppassword \
-		-e "drop database `$(DBNAME)`"
+		-e "drop database \`$(DBNAME)\`"
 
 MIGRATION_SERVICE:=migration
 flyway/info:
