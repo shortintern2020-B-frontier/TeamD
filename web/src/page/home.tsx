@@ -1,14 +1,10 @@
 import React from "react";
-import styles from "../css/home.module.css";
+import Sidebar from "../components/sidebar";
 
 const HomePage = () => {
   return (
-  <div className={styles.sidenav}>
-    <a href="#">About</a>
-    <a href="#">Services</a>
-    <a href="#">Clients</a>
-    <a href="#">Contact</a>
-  </div>);
+    <Sidebar/>
+  );
 };
 
 export default HomePage;
