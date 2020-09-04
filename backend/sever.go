@@ -10,6 +10,7 @@ import (
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+    "github.com/shortintern2020-B-frontier/TeamD/controller"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -51,8 +52,9 @@ func (s *Server) Route() *mux.Router {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("pong"))
 	})
-// hogeController := controller.NewHoge(s.db)
-//	r.Methods(http.MethodPost).Path("/api/").Handler(AppHandler{hogeController.hogeFunction})
+    
+    room_controller := controller.NewRoom(s.db)
+    r.Methods(http.MethodGet).Path("/api/room").Handler(AppHandler{room_controller.FindAllRooms})
 
 	return r
 }
