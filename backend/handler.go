@@ -5,6 +5,7 @@ import (
 	"github.com/shortintern2020-B-frontier/TeamD/httputil"
 )
 
+// この形式で値を返すようにする
 type AppHandler struct {
 	h func(http.ResponseWriter, *http.Request) (int, interface{}, error)
 }

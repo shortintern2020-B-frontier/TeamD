@@ -51,7 +51,8 @@ func (s *Server) Route() *mux.Router {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("pong"))
 	})
-//	r.Methods(http.MethodPost).Path("/api/").Handler(AppHandler{hogehogefunction})
+// hogeController := controller.NewHoge(s.db)
+//	r.Methods(http.MethodPost).Path("/api/").Handler(AppHandler{hogeController.hogeFunction})
 
 	return r
 }
