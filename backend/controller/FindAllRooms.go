@@ -1,12 +1,9 @@
 package controller
 
 import (
-    "fmt"
-    "log"
     "net/http"
 
     "github.com/jmoiron/sqlx"
-    "github.com/shortintern2020-B-frontier/TeamD/model"
     "github.com/shortintern2020-B-frontier/TeamD/repository"
 )
 
