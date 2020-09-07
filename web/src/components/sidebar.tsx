@@ -6,7 +6,6 @@ import { FiSettings,FiFilm,FiLogOut } from "react-icons/fi";
 const Sidebar = () =>{
     return(
         <div>
-            <div className={Style.shutter}></div>
             <section className={Style.container}>
                 <div className={Style.sidenav}>
                     <a href="#"><FiFilm /></a>
