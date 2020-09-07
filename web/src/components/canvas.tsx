@@ -93,6 +93,12 @@ class CanvasDrawing {
     const left = window.innerWidth - this.cell.width * x + randomLeft;
     const top = window.innerHeight - this.cell.height * y + randomTop;
 
+    context.strokeStyle = "black";
+    context.stroke();
+
+    context.fillStyle = "black";
+    context.fill();
+
     context.beginPath();
     context.moveTo(left, top);
     context.lineTo(left - 50, top - 150);
@@ -104,7 +110,6 @@ class CanvasDrawing {
 
     context.fillStyle = "black";
     context.fill();
-
     context.beginPath();
     context.arc(left - 50, top - 150, 30, 0, 2 * Math.PI);
     context.closePath();
@@ -165,7 +170,7 @@ class CanvasDrawing {
         top = 0;
 
       left = x - randomLeft / 10;
-      top = y - 0.5;
+      top = y - 1;
 
       context.font = "28px serif";
       context.fillText(text, left, top);
@@ -204,10 +209,18 @@ const Canvas = () => {
     const contextStamp = canvasStamp?.getContext("2d");
     if (!contextStamp) return;
 
-    setCanvasDrawing(new CanvasDrawing(context, contextStamp, stageHeight));
+    const newCanvasDrawing = new CanvasDrawing(
+      context,
+      contextStamp,
+      stageHeight
+    );
+    setCanvasDrawing(newCanvasDrawing);
+    newCanvasDrawing.showStampFromPeople();
+
+    for (let i = 0; i < 10; i++) {
+      newCanvasDrawing.drawPeople();
+    }
     if (!canvasDrawing) return;
-    canvasDrawing.showStampFromPeople();
-    // drawStage(this.context, stageHeight);
   }, [windowSize]);
 
   useEffect(() => {
@@ -228,12 +241,10 @@ const Canvas = () => {
     e: React.MouseEvent<HTMLCanvasElement, MouseEvent>
   ) => {
     if (!canvasDrawing) return;
-    canvasDrawing.drawPeople();
     const randomValues = { max: stamps.length, min: 1 };
     const ramdomId = Math.floor(
       Math.random() * (randomValues.max - randomValues.min) + randomValues.min
     );
-    canvasDrawing.showStampFromPeople();
     canvasDrawing.setStamp(ramdomId);
   };
 
