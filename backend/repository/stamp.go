@@ -26,3 +26,18 @@ func SelectStamps(db *sqlx.DB, ellapsed_time int, room_id int) ([]model.Stamp, e
 	
     return stamps, nil
 }
+
+/*
+func GenerateSQLSent(db *sqlx.DB, ellapsed_time int, room_id int) (string, error) {
+    // SQL文を生成
+		// その際、エラーがあればメッセージ投げる
+		
+		rooms := make([]model.Room, 0)
+
+		if err := db.Select(&rooms, "select room_id, end_time from room where room_id = ?", room_id); err != nil {
+			  return nil, err
+	  }
+
+    
+}	
+*/
