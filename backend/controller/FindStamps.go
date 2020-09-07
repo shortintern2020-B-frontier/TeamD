@@ -2,6 +2,7 @@ package controller
 
 import (
 		"net/http"
+	  "strconv"
 
 		"github.com/jmoiron/sqlx"
     "github.com/gorilla/mux"
@@ -13,29 +14,24 @@ type Stamp struct {
 }
 
 // controller
-func NewStamp(db *sqlx.DB) *Room {
+func NewStamp(db *sqlx.DB) *Stamp{
 	  return &Stamp{db: db}
 }
 
 // 条件に合うスタンプを取得
 func (stamp *Stamp) FindStamps(w http.ResponseWriter, r *http.Request) (int, interface{}, error){
-		
-		var int ellapsed_time
 
-		// decoderってどこあるんだ
-		// ここでクエリパラメータ取得
-		ellapsed_time = r.FormValue("ellapsed_time")
-
-		// 変数取得
+	  // 変数取得して数値に変換
+    ellapsed_time, _ := strconv.Atoi(r.FormValue("ellapsed_time"))
 		vars := mux.Vars(r)
+    room_id, _ := strconv.Atoi(vars["room_id"])
 
-		stamps, err := repository.SelectStamps(stamp.db, ellapsed_time, vars["room_id"])
+		stamps, err := repository.SelectStamps(stamp.db, ellapsed_time, room_id)
 
 		if err != nil {
-			  
 			  return http.StatusInternalServerError, nil, err
 		}
 
-		return http.StatusOk, stamps, nil
+		return http.StatusOK, stamps, nil
 }
 
