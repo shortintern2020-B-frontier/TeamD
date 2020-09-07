@@ -1,9 +1,7 @@
 import React from "react";
 
 import Style from "../css/sidebar.module.css";
-import { FiSettings } from "react-icons/fi";
-import { FiFilm } from "react-icons/fi";
-import { FiLogOut } from "react-icons/fi";
+import { FiSettings,FiFilm,FiLogOut } from "react-icons/fi";
 
 const Sidebar = () =>{
     return(
