@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 interface size {
   width: number;
@@ -47,15 +47,27 @@ class CanvasDrawing {
 
   drawPeople = (): void => {
     const targetPosition = this.searchEmptyCell();
-    console.log(targetPosition);
     if (!targetPosition) return;
     const { x, y } = targetPosition;
-    const vram = this.vram;
-    vram[1][10] = 1;
-    this.vram = vram;
-    console.table(vram);
-    const left = window.innerWidth - this.cell.width * x;
-    const top = window.innerHeight - this.cell.height * y;
+    const newVram = this.vram.map((horizontalCells, i) =>
+      horizontalCells.map((cell, l) => {
+        if (cell === 1) return 1;
+        if (i === y && l === x) return 1;
+        return 0;
+      })
+    );
+    this.vram = newVram;
+
+    const randomValues = { max: 50, min: 0 };
+    const randomLeft = Math.floor(
+      Math.random() * (randomValues.max - randomValues.min) + randomValues.min
+    );
+    const randomTop = Math.floor(
+      Math.random() * (randomValues.max - randomValues.min) + randomValues.min
+    );
+
+    const left = window.innerWidth - this.cell.width * x + randomLeft;
+    const top = window.innerHeight - this.cell.height * y + randomTop;
 
     this.context.beginPath();
     this.context.moveTo(left, top);
@@ -98,7 +110,6 @@ class CanvasDrawing {
       )
       .flat()
       .filter(Boolean);
-    console.table(this.vram);
     return this.randomlyGetValuesFromArray(emptyCells);
   };
 
@@ -141,7 +152,6 @@ const Canvas = () => {
   const handleOnClickCanvas = (
     e: React.MouseEvent<HTMLCanvasElement, MouseEvent>
   ) => {
-    console.log(e.clientX);
     if (!canvasDrawing) return;
     canvasDrawing.drawPeople();
   };
