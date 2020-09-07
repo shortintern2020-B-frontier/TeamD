@@ -43,10 +43,10 @@ func (stamp *Stamp) FindStamps(w http.ResponseWriter, r *http.Request) (int, int
 					  return http.StatusInternalServerError, nil, nil
     }
 
-		// room := rooms[0]
-	  // _, end_time = room.RoomID, room.EndTime
+		room := rooms[0]
+		_, end_time := room.RoomID, room.EndTime
 
-		stamps, err := repository.SelectStamps(stamp.db, ellapsed_time, room_id)
+		stamps, err := repository.SelectStamps(stamp.db, ellapsed_time, room_id, end_time)
 
 		if err != nil {
 			  return http.StatusInternalServerError, nil, err
