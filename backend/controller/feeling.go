@@ -29,7 +29,10 @@ func (feeling *Feeling) CreateFeeling(w http.ResponseWriter, r *http.Request) (i
             return http.StatusBadRequest, nil, err
         }
 
-        if _, err:= repository.FindRoom(tx, feeling.RoomId); err != nil{
+        if _, err := repository.FindRoom(tx, feeling.RoomId); err != nil{
+            return http.StatusNotFound, nil, err
+        }
+        end_time, err := repository.FindRoomEndTime(tx, feeling.RoomId); err != nil {
             return http.StatusNotFound, nil, err
         }
 		if err := tx.Commit(); err != nil {

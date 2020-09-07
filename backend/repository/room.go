@@ -34,7 +34,7 @@ func FindRoom(db *sqlx.Tx, id int) (*int, error) {
 }
 
 // Written by Taishi Hosokawa
-func GetRoomEndTime(db *sqlx.Tx, id int) (*int, error) {
+func FindRoomEndTime(db *sqlx.Tx, id int) (*int, error) {
     var endtime *int 
     if err := db.Get(endtime,`
     SELECT end_time FROM room WHERE id = ?
