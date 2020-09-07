@@ -12,23 +12,11 @@ interface Room{
 const HomePage = () => {
   const [rooms,setRooms] = useState<Room[]>();
 
-  const test_url="http://localhost:1996/ping";
   const fetch_url="http://localhost:1996/api/room";
-
-  const fetchPong = async()=>{
-    await axios.get(test_url)
-      .then((result: AxiosResponse)=>{
-        console.log(result.data);
-      })
-      .catch((err:AxiosError)=>{
-            console.log(err);
-      })
-  };
 
   const fetchRooms = async () =>{
     await axios.get(fetch_url)
       .then((result:AxiosResponse)=>{
-        console.log(result.data);
         setRooms(result.data);
       })
       .catch((err:AxiosError)=>{
@@ -37,19 +25,7 @@ const HomePage = () => {
   };
 
   useEffect(()=>{
-    fetchPong();
     fetchRooms();
-  },[]);
-
-
-  //dummy
-  useEffect(()=>{
-    const dummies:Room[]=[];
-    for(var i=0;i<20;i++){
-      const dummy:Room={room_id:i,title:"FIFA"+i,image_url:"https://pictkan.com/uploads/cache/1126823654/football-689262_1920-400x270-MM-100.jpg"};
-      dummies.push(dummy);
-    }
-    setRooms(dummies);
   },[]);
 
 
