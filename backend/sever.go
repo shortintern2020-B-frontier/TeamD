@@ -59,8 +59,10 @@ func (s *Server) Route() *mux.Router {
 	
 	feelingController := controller.NewFeeling(s.db)
 	r.Methods(http.MethodPost).Path("/api/room/{id:[0-9]+}/feeling").Handler(AppHandler{feelingController.CreateFeeling})
-	return r
 
 	stamp_controller := controller.NewStamp(s.db)
-  r.Methods(http.MethodGet).Path.("/api/room/{room_id}/feeling").Queries("ellapsed_time", "{[0-9]+?}").Handler(AppHandler{stamp_controller.FindStamps})
+  r.Methods(http.MethodGet).Path("/api/room/{room_id}/feeling").Queries("ellapsed_time", "{[0-9]+?}").Handler(AppHandler{stamp_controller.FindStamps})
+
+	return r
+
 }
