@@ -8,7 +8,7 @@ interface Stamp {
   ptime: number;
 }
 
-const stamps = [
+export const stamps = [
   {
     stamp_id: 1,
     img_url: "https://emojis.wiki/emoji-pics/apple/clapping-hands-apple.png",
