@@ -1,7 +1,11 @@
+
 import React,{useState,useEffect} from "react";
 import axios,{AxiosResponse,AxiosError}from "axios"
 import styles from "../css/home.module.css"
+import home from "../css/home.module.css";
 import RoomThumnail from "../components/thumnail"
+import Sidebar from "../components/sidebar";
+import { useGlobalState } from "../"
 
 interface Room{
   room_id:number;
@@ -10,7 +14,8 @@ interface Room{
 }
 
 const HomePage = () => {
-  const [rooms,setRooms] = useState<Room[]>();
+  const [rooms, setRooms] = useState<Room[]>();
+  const [firstRender, setFirstRender] = useGlobalState("firstRender")
 
   const fetch_url="http://localhost:1996/api/room";
 
@@ -24,19 +29,33 @@ const HomePage = () => {
     };
   };
 
+  const toggleFirstRender = () => {
+    setTimeout(() => {
+      setFirstRender(false);
+    }, 2600);
+  }
+
   useEffect(()=>{
     fetchRooms();
+    toggleFirstRender();
   },[]);
 
 
   return (
-    <div className={styles.container}>
-      <div className={styles.thumnailGrid}>
-        {rooms && rooms.map(item=>(
-          <RoomThumnail room={item} key={item.room_id}/>
-        ))}
+    <>
+      <div className={styles.container}>
+        <div className={styles.above}>
+          <Sidebar  />
+        </div>
+        <div className={styles.thumnailGrid}>
+          {rooms && rooms.map(item=>(
+            <RoomThumnail room={item} key={item.room_id}/>
+          ))}
+        </div>
       </div>
-    </div>
+      { firstRender && <div className={home.shutter} />}
+    </>
+
   );
 };
 
