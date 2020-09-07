@@ -8,15 +8,21 @@ import Style from "../css/room.module.css";
 
 const Room = (): JSX.Element => {
   const { id } = useParams();
-  const [isShowOverlay, setIsShowOverlay] = useState(true);
+  const [isShowOverlay, setIsShowOverlay] = useState(false);
+
+  const handleOnMouseEnter = () => {
+    setIsShowOverlay(true);
+    setTimeout(() => {
+      setIsShowOverlay(false);
+    }, 2000);
+  };
 
   return (
     <>
-      <div className={Style.container}>
+      <div className={Style.container} onMouseEnter={handleOnMouseEnter}>
         <Canvas />
-        <div id="ground"></div>
       </div>
-      {isShowOverlay && <Overlay />}
+      <Overlay />
     </>
   );
 };

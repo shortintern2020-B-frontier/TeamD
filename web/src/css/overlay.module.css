@@ -4,6 +4,11 @@
   /* grid-template-columns: 55px 55px 705px 55px 55px 55px 55px 55px 55px 55px; */
   /* grid-template-columns: 2% 5% 61% 5% 5% 5% 5% 5% 5% 2%; */
   grid-template-columns: 0.3fr 1fr 10fr 0.8fr 0.8fr 0.8fr 0.8fr 0.8fr 0.8fr 0.3fr;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
 }
 
 .image {
@@ -17,9 +22,9 @@
   height: 2.2em;
   padding: 0;
   margin: auto;
-
   border: none;
   outline: none;
+  cursor: pointer;
 }
 
 .wrapper {
@@ -31,16 +36,20 @@
   color: #fff;
   font-weight: 800;
   font-size: 1em;
-
+  margin: auto;
   width: 2.2em;
   height: 2.2em;
-
   border: 0.1em solid #333;
   border-radius: 50%;
   outline: none;
+  cursor: pointer;
 }
 
 .button_2:hover {
   background-color: #fff;
   color: #333;
+}
+
+.backHome {
+  display: flex;
 }
