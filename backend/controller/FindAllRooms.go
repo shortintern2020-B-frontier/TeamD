@@ -20,6 +20,7 @@ func (room *Room) FindAllRooms(w http.ResponseWriter, r *http.Request) (int, int
 
     rooms, err := repository.AllRooms(room.db)
 
+    w.Header().Set("Access-Control-Allow-Origin", "*")
     if err != nil {
         return http.StatusInternalServerError, nil, err
     }

@@ -49,6 +49,7 @@ func (s *Server) Run(port int) {
 func (s *Server) Route() *mux.Router {
 	r := mux.NewRouter()
 	r.Methods(http.MethodGet).Path("/ping").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("pong"))
 	})

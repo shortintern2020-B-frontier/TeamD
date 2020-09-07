@@ -1,0 +1,13 @@
+.thumnailGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,400px);
+    grid-auto-rows:400px;
+}
+
+.container {
+    background-color:black;
+    width: 100vw;
+    height: 100vh;
+    padding-top: 50px;
+}
+
