@@ -32,24 +32,5 @@ services:
       - ./backend:/app
     working_dir: /app
 
-  frontend:
-    build:
-      context: ./frontend
-    command:
-      parcel --hmr-port 1235 --hmr-hostname localhost index.html
-    environment:
-      - BACKEND_API=http://localhost:1996
-    volumes:
-      - ./frontend:/app
-    working_dir: /app
-    container_name: frontend
-    ports:
-      - "1234:1234"
-      - "1235:1235"
-
-
-
-
-
 volumes:
   data-volume:
