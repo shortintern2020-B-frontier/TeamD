@@ -57,7 +57,6 @@ func (s *Server) Route() *mux.Router {
 	r.Methods(http.MethodGet).Path("/api/room").Handler(AppHandler{room_controller.FindAllRooms})
 	
 	feelingController := controller.NewFeeling(s.db)
-	r.Methods(http.MethodPost).Path("api/room/{id:[0-9]+}/feeling").Handler(AppHandler{feelingController.CreateFeeling})
-
+	r.Methods(http.MethodPost).Path("/api/room/{id:[0-9]+}/feeling").Handler(AppHandler{feelingController.CreateFeeling})
 	return r
 }
