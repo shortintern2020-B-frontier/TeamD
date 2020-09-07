@@ -10,18 +10,23 @@ interface Room{
   image_url:string;
 }
 
+interface Size{
+  width:number;
+  height:number;
+}
+
 interface Props{
   room:Room;
+  size:Size;
 }
 
 
-const RoomThumnail:React.FC<Props>=({room})=>{
+const RoomThumnail:React.FC<Props>=({room,size})=>{
   const [imgSrc,setImgSrc] = useState(room.image_url);
-  
   return(
-          <div>
+          <div className={styles.container}>
             <Link className={styles.itemText} to={"/room/"+room.room_id}>
-              <img src={imgSrc} width="300" height="300" alt="new" onError={()=>{setImgSrc(default_thumnail)}}/>
+              <img src={imgSrc} width={size.width*0.15} height={size.width*0.15} alt="new" onError={()=>{setImgSrc(default_thumnail)}}/>
               <div className={styles.itemText}>{room.title} </div>
             </Link>
           </div>
