@@ -15,13 +15,13 @@ const HomePage = () => {
   const fetch_url="http://localhost:1996/api/room";
 
   const fetchRooms = async () =>{
-    await axios.get(fetch_url)
-      .then((result:AxiosResponse)=>{
+    const result =await axios.get(fetch_url);
+    if (result.status === 200){
         setRooms(result.data);
-      })
-      .catch((err:AxiosError)=>{
-        console.log(err);
-      });
+    }
+    else{
+        console.log("Err=>",result);
+    };
   };
 
   useEffect(()=>{
