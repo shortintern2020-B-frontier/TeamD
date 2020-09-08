@@ -3,6 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { createGlobalState } from "react-hooks-global-state"
+
+export const { useGlobalState } = createGlobalState({
+  firstRender: true
+})
 
 ReactDOM.render(
   <React.StrictMode>

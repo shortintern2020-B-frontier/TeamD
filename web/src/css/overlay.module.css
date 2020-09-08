@@ -6,7 +6,8 @@
   grid-template-columns: 0.3fr 1fr 10fr 0.8fr 0.8fr 0.8fr 0.8fr 0.8fr 0.8fr 0.3fr;
   position: fixed;
   bottom: 0;
-  width: 100%;
+  left: 0;
+  right: 0;
   height: 50px;
 }
 
@@ -21,9 +22,9 @@
   height: 2.2em;
   padding: 0;
   margin: auto;
-
   border: none;
   outline: none;
+  cursor: pointer;
 }
 
 .wrapper {
@@ -35,16 +36,13 @@
   color: #fff;
   font-weight: 800;
   font-size: 1em;
-
-  padding: 0;
   margin: auto;
-
   width: 2.2em;
   height: 2.2em;
-
   border: 0.1em solid #333;
   border-radius: 50%;
   outline: none;
+  cursor: pointer;
 }
 
 .button_2:hover {
@@ -52,8 +50,12 @@
   color: #333;
 }
 
+
 .chart {
   position: absolute;
   top: 60px;
   right: 20%;
+
+.backHome {
+  display: flex;
 }
