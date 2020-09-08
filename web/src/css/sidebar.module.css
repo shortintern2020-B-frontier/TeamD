@@ -1,0 +1,33 @@
+
+/* The sidebar menu */
+.sidenav {
+  width: 60px;
+  position: fixed;
+  z-index: 1;
+  top: 80px;
+  left: 0px;
+  background: rgb(63, 63, 63);
+  overflow-x: hidden;
+  padding: 8px 0;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  box-shadow: 2px 2px 4px;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 6px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #cecece;
+  display: block;
+}
+
+.sidenav a:hover {
+  color: #d32121;
+}
+  
+  /* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+  @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+  }
