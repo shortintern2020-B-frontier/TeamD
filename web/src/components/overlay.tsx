@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 import Style from "../css/overlay.module.css";
+import useInterval from 'use-interval';
 
 interface Stamp {
   stamp_id: number;
@@ -69,12 +70,30 @@ const Overlay = (): JSX.Element => {
     const res = await fetch(`http://localhost:1996/${id}/feeling`, options);
   };
 
-  return (
-    <div className={Style.container}>
+  const [time, setTime] = useState(0);
+  const [mtime, setMTime] = useState(0);
+
+
+  useInterval(() => {
+    setMTime(mtime + 1);
+    setTime(Math.floor(mtime/1000));
+  }, 1);
+
+  //console.log(time);
+  const handleChange = (e:any) => {setTime(Number(e.target.value))}
+  
+
+
+  const Wrapper = React.memo<{ value:number }>(
+    ({ value }) => {
+      console.log('render')
+      //console.log(Math.floor(time/1000))
+      return(
+        <div className={Style.container}>
       <div></div>
 
       <button className={Style.button_2} onClick={handleOnClickCount}>
-        ＜
+      
       </button>
 
       <span></span>
@@ -82,6 +101,7 @@ const Overlay = (): JSX.Element => {
       {/* <div>
         {count} {stamp.stamp_id} {stamp.ptime}
       </div> */}
+      <input type="range" id="volume" name="volume" min="0" max={10} value={ value } onChange={handleChange} />
 
       {stamps.map(({ stamp_id, img_url }) => {
         return (
@@ -100,6 +120,15 @@ const Overlay = (): JSX.Element => {
 
       <div></div>
     </div>
+
+      )
+    }
+  )
+
+
+
+  return (
+    < Wrapper value = {time} />
   );
 };
 
