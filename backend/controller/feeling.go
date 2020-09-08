@@ -71,7 +71,7 @@ func (feeling *Feeling) CreateFeeling(w http.ResponseWriter, r *http.Request) (i
 			return err
 		}
 		if err := tx.Commit(); err != nil {
-			return err
+			panic(err)
 		}
 		return nil
 	}(); err != nil {
