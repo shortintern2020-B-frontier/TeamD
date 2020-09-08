@@ -1,50 +1,28 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import Overlay from "../components/overlay";
+import Canvas from "../components/canvas";
 
-interface size {
-  width: number;
-  heigth: number;
-}
+import Style from "../css/room.module.css";
 
 const Room = (): JSX.Element => {
   const { id } = useParams();
-  const [size, setSize] = useState({} as size);
-  const [isShowOverlay, setIsShowOverlay] = useState(true);
-  const [count, setCount] = useState(0);
+  const [isShowOverlay, setIsShowOverlay] = useState(false);
 
-  useLayoutEffect(() => {
-    const element = document.getElementById("ground");
-    if (element?.clientWidth && element?.clientHeight)
-      setSize({
-        width: element?.clientWidth,
-        heigth: element?.clientHeight,
-      });
-  });
-
-  const handleWhileHover = () => {
+  const handleOnMouseEnter = () => {
     setIsShowOverlay(true);
-  };
-
-  const handleOnBlue = () => {
-    setIsShowOverlay(false);
-  };
-
-  const handleOnClickCount = () => {
-    setCount(count + 1);
+    setTimeout(() => {
+      setIsShowOverlay(false);
+    }, 2000);
   };
 
   return (
     <>
-      <div>
-        <div id="screen"></div>
-        <div id="ground"></div>
-        <button onClick={handleOnClickCount}></button>
-        <p>room id: {id}</p>
-        room id : {id}
+      <div className={Style.container} onMouseEnter={handleOnMouseEnter}>
+        <Canvas />
       </div>
-      {isShowOverlay && <Overlay />}
+      <Overlay />
     </>
   );
 };

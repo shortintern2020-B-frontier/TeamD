@@ -1,6 +1,8 @@
 package repository
 
 import (
+    "errors"
+
     "github.com/jmoiron/sqlx"
     "github.com/shortintern2020-B-frontier/TeamD/model"
 )
@@ -14,4 +16,32 @@ func AllRooms(db *sqlx.DB) ([]model.Room, error) {
     }
 
     return rooms, nil
+}
+
+//Written by Taishi Hosokawa
+// returns the id of a room to check the existence
+func FindRoom(db *sqlx.Tx, id int) (*int, error) {
+    var a int
+    if err := db.Get(&a, `
+    SELECT id FROM room WHERE id = ?
+    `, id); err != nil {
+        return nil, err
+    }
+    if a == 0 {
+        return nil, errors.New("specified room does not exist")
+    }
+    return &a, nil
+}
+
+// Written by Taishi Hosokawa
+// returns the end_time of room
+func FindRoomEndTime(db *sqlx.Tx, id int) (*int, error) {
+    var endtime int 
+    if err := db.Get(&endtime,`
+    SELECT end_time FROM room WHERE id = ?
+    `, id); err != nil {
+        return nil, errors.New("specified room does not exist")
+    }
+
+    return &endtime, nil
 }
