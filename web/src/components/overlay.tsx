@@ -245,43 +245,42 @@ const Overlay = (): JSX.Element => {
     )
   }
   return (
-    <div>
+    <div className={Style.bottoms}>
       <div className={Style.timebar}>
-        <input type="range" id="volume" name="volume" min="0" max={100} value={ time } onChange={handleChange} />
-        {showTime(curTime)}/{showTime(finTime)}
+        <input type="range" id="volume" name="volume" min="0" max={endtime} value={ time } onChange={handleChange} />
+        <p>{showTime(curTime)}/{showTime(finTime)}</p>
       </div>
-    <div className={Style.container}>
-      <span />
+      <div className={Style.container}>
+        <span />
 
-      <div className={Style.backHome}>
-        <button className={Style.button_2} onClick={handleOnClickBackHome}>
-          ＜
-        </button>
+        <div className={Style.backHome}>
+          <button className={Style.button_2} onClick={handleOnClickBackHome}>
+            ＜
+          </button>
+        </div>
+
+        <span />
+
+        <div className={Style.stamps}>
+          {stamps.map(({ stamp_id, img_url }) => {
+            return (
+              <div className={Style.wrapper}>
+                <button className={Style.button}>
+                  <img
+                    className={Style.image}
+                    src={img_url}
+                    alt="new"
+                    onClick={() => handleOnClickStamp(stamp_id)}
+                  />
+                </button>
+              </div>
+            );
+          })}
+          <canvas ref={canvasRef} className={Style.canvas} />
+        </div>
       </div>
-
-      <span />
-
-      <div className={Style.stamps}>
-        {stamps.map(({ stamp_id, img_url }) => {
-          return (
-            <div className={Style.wrapper}>
-              <button className={Style.button}>
-                <img
-                  className={Style.image}
-                  src={img_url}
-                  alt="new"
-                  onClick={() => handleOnClickStamp(stamp_id)}
-                />
-              </button>
-            </div>
-          );
-        })}
-        <canvas ref={canvasRef} className={Style.canvas} />
-      </div>
-
-      <div></div>
     </div>
-    </div>
+    
 
   );
 };

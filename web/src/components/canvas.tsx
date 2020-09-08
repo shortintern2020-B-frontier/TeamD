@@ -166,8 +166,7 @@ class CanvasDrawing {
   showStampFromPeople = (ts?: number): void => {
     const context = this.stampContext;
     context.clearRect(0, 0, window.innerWidth, window.innerHeight);
-
-    const newStamps = this.stamps.map(({ x, y, text }) => {
+  const newStamps = this.stamps.map(({ x, y, text }) => {
       const randomValues = { max: 10, min: -10 };
       const randomLeft = Math.floor(
         Math.random() * (randomValues.max - randomValues.min) + randomValues.min
@@ -267,7 +266,7 @@ const Canvas = () => {
           bottom: 50,
           right: 0,
           zIndex: 10,
-          height: "calc(100vh - 50px)",
+          height: "calc(100vh - 80px)",
           width: "100%",
         }}
         onClick={handleOnClickCanvas}

@@ -4,12 +4,17 @@
   /* grid-template-columns: 55px 55px 705px 55px 55px 55px 55px 55px 55px 55px; */
   /* grid-template-columns: 2% 5% 61% 5% 5% 5% 5% 5% 5% 2%; */
   grid-template-columns: 0.3fr 1fr 10fr 0fr;
-  position: fixed;
-  bottom: 0;
   left: 0;
   right: 0;
   height: 50px;
 }
+
+.bottoms{
+  position: fixed;
+  bottom: 0;
+  
+}
+
 
 .image {
   width: 2.2em;
@@ -51,9 +56,12 @@
 }
 
 .timebar{
-  background:rgb(143, 143, 143);
+  background:rgb(163, 163, 163);
+  /* padding: 5px 0;*/
+  line-height: 14px;
+  display:grid;
+  grid-template-columns: 1fr 380px;
 }
-
 
 input[type="range"] {
   -webkit-appearance: none; 
@@ -61,10 +69,11 @@ input[type="range"] {
   cursor: pointer; /* カーソルを分かりやすく */
   outline: none; 
   height: 14px; 
-  width: 80%; /* バーの幅 */
+  width: 90%; /* バーの幅 */
   background: #9e9e9e; /* バーの背景色 */
   border-radius: 10px; /* バーの両端の丸み */
   border: solid 3px #cacaca; /* バー周囲の線 */
+  margin: auto 0 auto auto;
 }
 /* WebKit向けのつまみ */
 input[type="range"]::-webkit-slider-thumb {
