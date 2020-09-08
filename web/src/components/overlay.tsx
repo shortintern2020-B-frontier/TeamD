@@ -18,6 +18,21 @@ interface Time {
 const endtime=40000;
 let mtime = 0;
 
+const toTwoDigit = (num:number):String=>{
+  return("0"+num).slice(-2);
+}
+
+const secToTime = (secTime: number): Time => {
+  const sec = secTime % 60;
+  secTime = Math.floor(secTime / 60);
+  const min = secTime % 60;
+  secTime = Math.floor(secTime / 60);
+  const hour = secTime % 60;
+
+  const time = { hour: hour, minute: min, second: sec };
+  return time;
+}
+
 const stamps = [
   {
     stamp_id: 1,
@@ -54,6 +69,10 @@ const Overlay = (): JSX.Element => {
   const [stamp, setStamp] = useState({} as Stamp);
   const { id } = useParams();
 
+  useEffect(()=>{
+    mtime=0;
+  },[]);
+
   const handleOnClickCount = () => {
     setCount(count + 1);
   };
@@ -79,20 +98,16 @@ const Overlay = (): JSX.Element => {
   };
 
   const [time, setTime] = useState(0);
-  //const [mtime, setMTime] = useState(0);
   
 
-
+  const interval=50;
   useInterval(() => {
-    //setMTime(mtime + 1);
-    mtime += 1000;
-    /* if (mtime%1000==0){
-    setTime(time+1);
-    } */
-    // if(mtime/1000 - time >= 1){
+    mtime += interval;
+    
+    if(mtime/1000 - time >= 1){
       setTime(time+1);
-    //} 
-  }, 1000);
+    } 
+  }, interval);
 
   const handleChange = (e:any) => {setTime(Number(e.target.value)); mtime = Number(e.target.value)*1000}
   
@@ -104,9 +119,9 @@ const Overlay = (): JSX.Element => {
       console.log(value)
       //console.log(Math.floor(time/1000))
       return(
+        <div>
+          <input type="range" id="volume" name="volume" min="0" max={100} value={ value } onChange={handleChange} />
         <div className={Style.container}>
-      <input type="range" id="volume" name="volume" min="0" max={100} value={ value } onChange={handleChange} />
-
       <div></div>
 
       <button className={Style.button_2} onClick={handleOnClickCount}>
@@ -133,6 +148,7 @@ const Overlay = (): JSX.Element => {
 
       <div></div>
     </div>
+    </div>
 
       )
     }
@@ -140,8 +156,39 @@ const Overlay = (): JSX.Element => {
  
 
 //< Wrapper value = {time} />
+    const curTime= secToTime(time);
+    const finTime = secToTime(endtime);
   return (
-    < Wrapper value = {time} />
+    <div>
+        <input type="range" id="volume" name="volume" min="0" max={100} value={ time } onChange={handleChange} />
+        {finTime.hour > 0 && <span>{toTwoDigit(curTime.hour)}:</span>}
+          {toTwoDigit(curTime.minute)}:{toTwoDigit(curTime.second)}/
+          {finTime.hour > 0 && <span>{toTwoDigit(finTime.hour)}:</span>}
+          {toTwoDigit(finTime.minute)}:{toTwoDigit(finTime.second)}
+      <div className={Style.container}>
+      <div></div>
+
+        <button className={Style.button_2} onClick={handleOnClickCount}>
+        </button>
+
+      <span></span>
+
+      {/* <input type="range" id="volume" name="volume" min="0" max={100} value={ value } onChange={handleChange} /> */}
+      {stamps.map(({ stamp_id, img_url }) => {
+        return (
+          <div className={Style.wrapper}>
+            <button className={Style.button}>
+              <img
+                className={Style.image}
+                src={img_url}
+                alt="new"
+                onClick={() => handleOnClickStamp(stamp_id)}
+              />
+            </button>
+          </div>
+        )})};
+        </div>
+        </div>
   );
 };
 
