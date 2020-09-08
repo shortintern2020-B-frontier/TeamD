@@ -2,13 +2,12 @@ package repository
 
 import (
     "errors"
-
     "github.com/jmoiron/sqlx"
-
     "github.com/shortintern2020-B-frontier/TeamD/model"
 )
 
-// データベースからroom dataをselect all.
+// Written by Yuto Kojima
+// select all the rooms that mutch the conditions
 func AllRooms(db *sqlx.DB) ([]model.Room, error) {
     rooms := make([]model.Room, 0)
 
