@@ -9,6 +9,7 @@ import (
 	"github.com/shortintern2020-B-frontier/TeamD/model"
 )
 
+// inserts feeling record
 func CreateFeeling (db *sqlx.Tx, feeling *model.Feeling) (result sql.Result, err error){
 	stmt, err := db.Prepare(`
 	INSERT INTO feeling (room_id, stamp_id, ellapsed_time) VALUES(?, ?, ?)

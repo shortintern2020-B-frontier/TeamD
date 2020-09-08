@@ -1,4 +1,5 @@
 // Written by Taishi Hosokawa
+// Feeling Controller
 package controller
 
 import (
@@ -28,6 +29,7 @@ func (feeling *Feeling) CreateFeeling(w http.ResponseWriter, r *http.Request) (i
     w.Header().Set("Access-Control-Allow-Origin", "*")
 
     var rowsAffected int64
+    // a transaction
 	if err := func() error {
         tx, err := feeling.db.Beginx()
         if err != nil {

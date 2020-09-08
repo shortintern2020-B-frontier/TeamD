@@ -20,6 +20,7 @@ func AllRooms(db *sqlx.DB) ([]model.Room, error) {
 }
 
 //Written by Taishi Hosokawa
+// returns the id of a room to check the existence
 func FindRoom(db *sqlx.Tx, id int) (*int, error) {
     var a int
     if err := db.Get(&a, `
@@ -34,6 +35,7 @@ func FindRoom(db *sqlx.Tx, id int) (*int, error) {
 }
 
 // Written by Taishi Hosokawa
+// returns the end_time of room
 func FindRoomEndTime(db *sqlx.Tx, id int) (*int, error) {
     var endtime int 
     if err := db.Get(&endtime,`
