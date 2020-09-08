@@ -176,17 +176,26 @@ const Overlay = (): JSX.Element => {
     history.push("/");
   };
 
-  const handleOnClickStamp = (id: number) => {
+  const handleOnClickStamp = (stamp_id: number) => {
     if (!canvasDrawing) return;
-    canvasDrawing.setStamp(id);
+    canvasDrawing.setStamp(stamp_id);
 
-    const data = { stamp_id: id, ptime: 12 };
+    const data = { room_id: Number(id), ptime: 12, stamp_id };
     setStamp({ stamp_id: id, ptime: 12 });
+    console.log(data);
+    postStampData(data);
   };
 
   const postStampData = async (data: Stamp) => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
+    headers.append("Accept", "application/json");
+    headers.append("Access-Control-Allow-Origin", "http://localhost:1996");
+    headers.append("Access-Control-Allow-Credentials", "true");
+    headers.append(
+      "Access-Control-Allow-Headers",
+      "X-Requested-With, Content-Type, Authorization, Origin, Accept"
+    );
 
     const options: RequestInit = {
       headers: headers,
@@ -195,7 +204,10 @@ const Overlay = (): JSX.Element => {
       mode: "cors",
     };
 
-    // const res = await fetch(`http://localhost:1996/${id}/feeling`, options);
+    const res = await fetch(
+      `http://localhost:1996/api/room/${id}/feeling`,
+      options
+    );
   };
 
   return (
