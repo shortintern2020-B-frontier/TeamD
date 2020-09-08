@@ -5,8 +5,6 @@ package controller
 import (
     "net/http"
     "errors"
-    "bytes"
-    "fmt"
 	"encoding/json"
 
     "github.com/jmoiron/sqlx"
