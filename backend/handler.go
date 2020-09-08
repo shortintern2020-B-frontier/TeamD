@@ -13,6 +13,7 @@ type AppHandler struct {
 //JSONで返す
 func (a AppHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	status, res, err := a.h(w, r)
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:1234")
 	if err != nil {
 		httputil.RespondJSON(w, status, err)
 		return
