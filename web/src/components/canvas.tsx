@@ -192,7 +192,7 @@ class CanvasDrawing {
   showStampFromPeople = (ts?: number): void => {
     const context = this.stampContext;
     context.clearRect(0, 0, window.innerWidth, window.innerHeight);
-  const newStamps = this.stamps.map(({ x, y, text }) => {
+    const newStamps = this.stamps.map(({ x, y, text }) => {
       const randomValues = { max: 10, min: -10 };
       const randomLeft = Math.floor(
         Math.random() * (randomValues.max - randomValues.min) + randomValues.min
@@ -223,13 +223,23 @@ class CanvasDrawing {
   };
 }
 
-const Canvas = () => {
+interface Canvas {
+  stampDatas: { stamp_id: number }[];
+}
+
+const Canvas = ({ stampDatas }: Canvas) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvasStampRef = useRef<HTMLCanvasElement>(null);
   const [windowSize, setWindowSize] = useState({} as size);
   const [canvasDrawing, setCanvasDrawing] = useState<CanvasDrawing>();
 
   const stageHeight = 400;
+
+  if (canvasDrawing)
+    stampDatas.forEach(({ stamp_id }) => {
+      canvasDrawing.setStamp(stamp_id);
+    });
+  console.log(stampDatas);
 
   useEffect(() => {
     const canvas = canvasRef.current;
