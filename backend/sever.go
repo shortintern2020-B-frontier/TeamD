@@ -53,7 +53,14 @@ func (s *Server) Route() *mux.Router {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("pong"))
 	})
-    
+	
+	r.Methods(http.MethodOptions).Path("/api/room/{room_id}/feeling").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, access-control-allow-origin")
+		w.WriteHeader(http.StatusOK)
+	})
+	
     room_controller := controller.NewRoom(s.db)
 	r.Methods(http.MethodGet).Path("/api/room").Handler(AppHandler{room_controller.FindAllRooms})
 	
@@ -61,7 +68,7 @@ func (s *Server) Route() *mux.Router {
 	r.Methods(http.MethodPost).Path("/api/room/{id:[0-9]+}/feeling").Handler(AppHandler{feelingController.CreateFeeling})
 
 	stamp_controller := controller.NewStamp(s.db)
-  r.Methods(http.MethodGet).Path("/api/room/{room_id}/feeling").Queries("ellapsed_time", "{[0-9]+?}").Handler(AppHandler{stamp_controller.FindStamps})
+    r.Methods(http.MethodGet).Path("/api/room/{room_id}/feeling").Queries("ellapsed_time", "{[0-9]+?}").Handler(AppHandler{stamp_controller.FindStamps})
 
 	return r
 
