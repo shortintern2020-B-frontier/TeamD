@@ -270,6 +270,8 @@ const Canvas = () => {
           bottom: 50,
           right: 0,
           zIndex: 10,
+          height: "calc(100vh - 50px)",
+          width: "100%",
         }}
         onClick={handleOnClickCanvas}
       />
