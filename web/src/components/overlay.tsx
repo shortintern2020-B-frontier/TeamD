@@ -215,16 +215,14 @@ const Overlay = (): JSX.Element => {
         <span />
 
         <div className={Style.stamps}>
-          {stamps.map(({ stamp_id, img_url }) => {
+          {stamps.map(({ stamp_id, img_url, text }) => {
             return (
               <div className={Style.wrapper}>
-                <button className={Style.button}>
-                  <img
-                    className={Style.image}
-                    src={img_url}
-                    alt="new"
-                    onClick={() => handleOnClickStamp(stamp_id)}
-                  />
+                <button
+                  className={Style.button}
+                  onClick={() => handleOnClickStamp(stamp_id)}
+                >
+                  {text}
                 </button>
               </div>
             );
