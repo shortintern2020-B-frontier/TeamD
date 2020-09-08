@@ -10,6 +10,12 @@ interface Stamp {
   ptime: number;
 }
 
+interface Time {
+  hour:number;
+  minute:number;
+  second:number;
+}
+const endtime=40000;
 let mtime = 0;
 
 const stamps = [
@@ -99,6 +105,8 @@ const Overlay = (): JSX.Element => {
       //console.log(Math.floor(time/1000))
       return(
         <div className={Style.container}>
+      <input type="range" id="volume" name="volume" min="0" max={100} value={ value } onChange={handleChange} />
+
       <div></div>
 
       <button className={Style.button_2} onClick={handleOnClickCount}>
@@ -107,8 +115,7 @@ const Overlay = (): JSX.Element => {
 
       <span></span>
 
-      <input type="range" id="volume" name="volume" min="0" max={100} value={ value } onChange={handleChange} />
-
+      {/* <input type="range" id="volume" name="volume" min="0" max={100} value={ value } onChange={handleChange} /> */}
       {stamps.map(({ stamp_id, img_url }) => {
         return (
           <div className={Style.wrapper}>
