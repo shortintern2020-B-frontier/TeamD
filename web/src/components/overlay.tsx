@@ -10,6 +10,8 @@ interface Stamp {
   ptime: number;
 }
 
+let mtime = 0;
+
 const stamps = [
   {
     stamp_id: 1,
@@ -71,17 +73,24 @@ const Overlay = (): JSX.Element => {
   };
 
   const [time, setTime] = useState(0);
-  const [mtime, setMTime] = useState(0);
+  //const [mtime, setMTime] = useState(0);
+  
 
 
   useInterval(() => {
-    setMTime(mtime + 1);
-    setTime(Math.floor(mtime/1000));
-  }, 1);
+    //setMTime(mtime + 1);
+    mtime += 1000;
+    /* if (mtime%1000==0){
+    setTime(time+1);
+    } */
+    // if(mtime/1000 - time >= 1){
+      setTime(time+1);
+    //} 
+  }, 1000);
 
-  //console.log(time);
-  const handleChange = (e:any) => {setTime(Number(e.target.value))}
+  const handleChange = (e:any) => {setTime(Number(e.target.value)); mtime = Number(e.target.value)*1000}
   
+  console.log(mtime);
 
 
   const Wrapper = React.memo<{ value:number }>(
@@ -98,7 +107,7 @@ const Overlay = (): JSX.Element => {
 
       <span></span>
 
-      <input type="range" id="volume" name="volume" min="0" max={10} value={ value } onChange={handleChange} />
+      <input type="range" id="volume" name="volume" min="0" max={100} value={ value } onChange={handleChange} />
 
       {stamps.map(({ stamp_id, img_url }) => {
         return (
