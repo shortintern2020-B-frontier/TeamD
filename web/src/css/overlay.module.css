@@ -30,6 +30,7 @@
   border: none;
   outline: none;
   cursor: pointer;
+  font-size: 25px;
 }
 
 .wrapper {
@@ -54,6 +55,7 @@
   background-color: #fff;
   color: #333;
 }
+
 
 .timebar{
   background:rgb(163, 163, 163);
@@ -104,6 +106,7 @@ input[type="range"]:active::-webkit-slider-thumb {
 }
 
 
+
 .chart {
   position: absolute;
   top: 60px;
@@ -118,7 +121,7 @@ input[type="range"]:active::-webkit-slider-thumb {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   height: 50px;
-  gap: 28px;
+  gap: 5px;
   padding: 0 36px;
   position: relative;
 }

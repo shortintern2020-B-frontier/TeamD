@@ -1,6 +1,7 @@
 import { Pie } from "react-chartjs-2";
 import React, { useState, useRef, useEffect } from "react";
 import { useParams, Link, useHistory } from "react-router-dom";
+import "chart.piecelabel.js";
 
 import Style from "../css/overlay.module.css";
 import useInterval from 'use-interval';
@@ -76,7 +77,6 @@ const data = {
   labels: ["👏", "😡", "💕", "🎶", "😱", "🥺"],
   datasets: [
     {
-      chartColors: "rgba(75,192,192,1)",
       data: [30, 25, 20, 15, 10, 90],
       backgroundColor: [
         "#feca57",
@@ -90,10 +90,21 @@ const data = {
   ],
 };
 
-const options = {
+const chart_options = {
   maintainAspectRatio: false,
   responsive: false,
+  legend: {
+    display: false,
+  },
+  pieceLabel: {
+    render: "label",
+    fontSize: 25,
+  },
+  animation: {
+    duration: 0,
+  },
 };
+
 interface size {
   width: number;
   height: number;
@@ -245,6 +256,7 @@ const Overlay = (): JSX.Element => {
     )
   }
   return (
+    <div>
     <div className={Style.bottoms}>
       <div className={Style.timebar}>
         <input type="range" id="volume" name="volume" min="0" max={endtime} value={ time } onChange={handleChange} />
@@ -252,34 +264,42 @@ const Overlay = (): JSX.Element => {
       </div>
       <div className={Style.container}>
         <span />
-
-        <div className={Style.backHome}>
-          <button className={Style.button_2} onClick={handleOnClickBackHome}>
-            ＜
-          </button>
-        </div>
-
-        <span />
-
-        <div className={Style.stamps}>
-          {stamps.map(({ stamp_id, img_url }) => {
-            return (
-              <div className={Style.wrapper}>
-                <button className={Style.button}>
-                  <img
-                    className={Style.image}
-                    src={img_url}
-                    alt="new"
-                    onClick={() => handleOnClickStamp(stamp_id)}
-                  />
-                </button>
-              </div>
-            );
-          })}
-          <canvas ref={canvasRef} className={Style.canvas} />
-        </div>
+      <div className={Style.backHome}>
+        <button className={Style.button_2} onClick={handleOnClickBackHome}>
+          ＜
+        </button>
       </div>
+
+      <span />
+
+      <div className={Style.stamps}>
+
+        {stamps.map(({ stamp_id, img_url, text }) => {
+          return (
+            <div className={Style.wrapper}>
+              <button
+                className={Style.button}
+                onClick={() => handleOnClickStamp(stamp_id)}
+              >
+                {text}
+
+              </button>
+            </div>
+          );
+        })}
+        
+        <canvas ref={canvasRef} className={Style.canvas} />
+      </div>
+      </div>
+      </div>
+      
+
+      <div className={Style.chart}>
+      <Pie data={data} options={chart_options} width={300} height={300} />
     </div>
+
+    </div>
+    
     
 
   );
