@@ -40,13 +40,13 @@ func GenerateSQLSent(ellapsed_time int, room_id int, end_time int) (string, bool
 		
     if ellapsed_time - 2000 <= 0 {
 			  fmt.Println("Yes") 
-		    SQLSent = SQLSent + "ellapsed_time >= 0 and ellapsed_time <= ? + 2000"
-    } else if ellapsed_time + 2000 >= end_time {
+		    SQLSent = SQLSent + "ellapsed_time >= 0 and ellapsed_time <= ?"
+    } else if ellapsed_time >= end_time {
 			  
-			  SQLSent = SQLSent + "ellapsed_time >= ? - 2000 and ellapsed_time <= end_time"
+			  SQLSent = SQLSent + "ellapsed_time >= end_time - 2000 and ellapsed_time <= end_time"
 		} else {
         flag = false
-			  SQLSent = SQLSent + "ellapsed_time >= ? - 2000 and ellapsed_time <= ? + 2000"
+			  SQLSent = SQLSent + "ellapsed_time >= ? - 2000 and ellapsed_time <= ?"
 		}
 
 		return SQLSent, flag
