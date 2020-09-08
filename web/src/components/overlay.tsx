@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useParams, Link, useHistory } from "react-router-dom";
 
 import Style from "../css/overlay.module.css";
 
@@ -9,7 +8,7 @@ interface Stamp {
   ptime: number;
 }
 
-const stamps = [
+export const stamps = [
   {
     stamp_id: 1,
     img_url: "https://emojis.wiki/emoji-pics/apple/clapping-hands-apple.png",
@@ -44,14 +43,14 @@ const Overlay = (): JSX.Element => {
   const [count, setCount] = useState(0);
   const [stamp, setStamp] = useState({} as Stamp);
   const { id } = useParams();
+  const history = useHistory();
 
-  const handleOnClickCount = () => {
-    setCount(count + 1);
+  const handleOnClickBackHome = () => {
+    history.push("/");
   };
 
   const handleOnClickStamp = (id: number) => {
     const data = { stamp_id: id, ptime: 12 };
-    // postStampData(data);
     setStamp({ stamp_id: id, ptime: 12 });
   };
 
@@ -71,17 +70,15 @@ const Overlay = (): JSX.Element => {
 
   return (
     <div className={Style.container}>
-      <div></div>
+      <span />
 
-      <button className={Style.button_2} onClick={handleOnClickCount}>
-        ＜
-      </button>
+      <div className={Style.backHome}>
+        <button className={Style.button_2} onClick={handleOnClickBackHome}>
+          ＜
+        </button>
+      </div>
 
-      <span></span>
-
-      {/* <div>
-        {count} {stamp.stamp_id} {stamp.ptime}
-      </div> */}
+      <span />
 
       {stamps.map(({ stamp_id, img_url }) => {
         return (
