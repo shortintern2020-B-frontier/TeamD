@@ -34,8 +34,10 @@ func (feeling *Feeling) CreateFeeling(w http.ResponseWriter, r *http.Request) (i
             return err
         }
         defer func() {
-            if err := tx.Rollback(); err != nil {
-                panic(err)
+            if err := recover(); err != nil {
+                if rollbackErr := tx.Rollback(); rollbackErr != nil {
+                    panic(err)
+                }    
             }
         }()
 
