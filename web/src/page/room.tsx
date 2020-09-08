@@ -6,8 +6,10 @@ import Canvas from "../components/canvas";
 
 import Style from "../css/room.module.css";
 
+
 const Room = (): JSX.Element => {
   const { id } = useParams();
+
   const [isShowOverlay, setIsShowOverlay] = useState(false);
 
   const handleOnMouseEnter = () => {

@@ -4,13 +4,39 @@ import { useParams, Link, useHistory } from "react-router-dom";
 import "chart.piecelabel.js";
 
 import Style from "../css/overlay.module.css";
+import useInterval from 'use-interval';
 
 interface Stamp {
   stamp_id: number;
   ptime: number;
 }
 
-export const stamps = [
+
+interface Time {
+  hour:number;
+  minute:number;
+  second:number;
+}
+const endtime=40000;
+let mtime = 0;
+
+const toTwoDigit = (num:number):String=>{
+  return("0"+num).slice(-2);
+}
+
+const secToTime = (secTime: number): Time => {
+  const sec = secTime % 60;
+  secTime = Math.floor(secTime / 60);
+  const min = secTime % 60;
+  secTime = Math.floor(secTime / 60);
+  const hour = secTime % 60;
+
+  const time = { hour: hour, minute: min, second: sec };
+  return time;
+}
+
+const stamps = [
+
   {
     stamp_id: 1,
     img_url: "https://emojis.wiki/emoji-pics/apple/clapping-hands-apple.png",
@@ -172,8 +198,15 @@ const Overlay = (): JSX.Element => {
     setCanvasDrawing(new CanvasDrawing(context));
   }, []);
 
+
+  useEffect(()=>{
+    mtime=0;
+  },[]);
+
+  
   const handleOnClickBackHome = () => {
     history.push("/");
+
   };
 
   const handleOnClickStamp = (id: number) => {
@@ -198,14 +231,39 @@ const Overlay = (): JSX.Element => {
     // const res = await fetch(`http://localhost:1996/${id}/feeling`, options);
   };
 
+  const [time, setTime] = useState(0);
+
+  const interval=50;
+  useInterval(() => {
+    mtime += interval;
+    if(mtime/1000 - time >= 1){
+      setTime(time+1);
+    } 
+  }, interval);
+
+  const handleChange = (e:any) => {
+    setTime(Number(e.target.value));
+    mtime = Number(e.target.value)*1000;
+  }
+
+  const curTime= secToTime(time);
+  const finTime = secToTime(endtime);
+
+  
+  const showTime=(time:Time)=>{
+    return(
+      <span>{toTwoDigit(time.hour)}:{toTwoDigit(time.minute)}:{toTwoDigit(time.second)}</span>
+    )
+  }
   return (
     <div>
-      <div className={Style.chart}>
-        <Pie data={data} options={chart_options} width={300} height={300} />
+    <div className={Style.bottoms}>
+      <div className={Style.timebar}>
+        <input type="range" id="volume" name="volume" min="0" max={endtime} value={ time } onChange={handleChange} />
+        <p>{showTime(curTime)}/{showTime(finTime)}</p>
       </div>
       <div className={Style.container}>
         <span />
-
         <div className={Style.backHome}>
           <button className={Style.button_2} onClick={handleOnClickBackHome}>
             ＜
@@ -223,16 +281,24 @@ const Overlay = (): JSX.Element => {
                   onClick={() => handleOnClickStamp(stamp_id)}
                 >
                   {text}
+
                 </button>
               </div>
             );
           })}
           <canvas ref={canvasRef} className={Style.canvas} />
         </div>
-
-        <div></div>
       </div>
+      </div>
+
+      <div className={Style.chart}>
+        <Pie data={data} options={chart_options} width={300} height={300} />
+      </div>
+
     </div>
+    
+    
+
   );
 };
 
