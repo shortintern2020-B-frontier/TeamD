@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Pie } from "react-chartjs-2";
 
 import Style from "../css/overlay.module.css";
 
@@ -40,6 +40,29 @@ const stamps = [
   },
 ];
 
+const data = {
+  labels: ["👏", "😡", "💕", "🎶", "😱", "🥺"],
+  datasets: [
+    {
+      chartColors: "rgba(75,192,192,1)",
+      data: [30, 25, 20, 15, 10, 90],
+      backgroundColor: [
+        "#feca57",
+        "#ff6b6b",
+        "#ff9ff3",
+        "#00d2d3",
+        "#5f27cd",
+        "#54a0ff",
+      ],
+    },
+  ],
+};
+
+const options = {
+  maintainAspectRatio: false,
+  responsive: false,
+};
+
 const Overlay = (): JSX.Element => {
   const [count, setCount] = useState(0);
   const [stamp, setStamp] = useState({} as Stamp);
@@ -70,35 +93,34 @@ const Overlay = (): JSX.Element => {
   };
 
   return (
-    <div className={Style.container}>
-      <div></div>
+    <div>
+      <div className={Style.chart}>
+        <Pie data={data} options={options} width={300} height={300} />
+      </div>
+      <div className={Style.container}>
+        <button className={Style.button_2} onClick={handleOnClickCount}>
+          ＜
+        </button>
+        <span></span>
+        <span></span>
 
-      <button className={Style.button_2} onClick={handleOnClickCount}>
-        ＜
-      </button>
+        {stamps.map(({ stamp_id, img_url }) => {
+          return (
+            <div className={Style.wrapper}>
+              <button className={Style.button}>
+                <img
+                  className={Style.image}
+                  src={img_url}
+                  alt="new"
+                  onClick={() => handleOnClickStamp(stamp_id)}
+                />
+              </button>
+            </div>
+          );
+        })}
 
-      <span></span>
-
-      {/* <div>
-        {count} {stamp.stamp_id} {stamp.ptime}
-      </div> */}
-
-      {stamps.map(({ stamp_id, img_url }) => {
-        return (
-          <div className={Style.wrapper}>
-            <button className={Style.button}>
-              <img
-                className={Style.image}
-                src={img_url}
-                alt="new"
-                onClick={() => handleOnClickStamp(stamp_id)}
-              />
-            </button>
-          </div>
-        );
-      })}
-
-      <div></div>
+        <div></div>
+      </div>
     </div>
   );
 };

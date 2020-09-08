@@ -4,6 +4,10 @@
   /* grid-template-columns: 55px 55px 705px 55px 55px 55px 55px 55px 55px 55px; */
   /* grid-template-columns: 2% 5% 61% 5% 5% 5% 5% 5% 5% 2%; */
   grid-template-columns: 0.3fr 1fr 10fr 0.8fr 0.8fr 0.8fr 0.8fr 0.8fr 0.8fr 0.3fr;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
 }
 
 .image {
@@ -32,6 +36,9 @@
   font-weight: 800;
   font-size: 1em;
 
+  padding: 0;
+  margin: auto;
+
   width: 2.2em;
   height: 2.2em;
 
@@ -43,4 +50,10 @@
 .button_2:hover {
   background-color: #fff;
   color: #333;
+}
+
+.chart {
+  position: absolute;
+  top: 60px;
+  right: 20%;
 }
