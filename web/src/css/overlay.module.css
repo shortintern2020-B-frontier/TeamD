@@ -45,13 +45,17 @@
   color: #333;
 }
 
+.timebar{
+  background:rgb(143, 143, 143);
+}
+
 
 input[type="range"] {
-  -webkit-appearance: none; /* 🚩これ無しだとスタイルがほぼ全く反映されないので注意 */
+  -webkit-appearance: none; 
   appearance: none;
   cursor: pointer; /* カーソルを分かりやすく */
-  outline: none; /* スライダーのアウトラインは見た目がキツイので消す */
-  height: 14px; /* バーの高さ */
+  outline: none; 
+  height: 14px; 
   width: 80%; /* バーの幅 */
   background: #9e9e9e; /* バーの背景色 */
   border-radius: 10px; /* バーの両端の丸み */

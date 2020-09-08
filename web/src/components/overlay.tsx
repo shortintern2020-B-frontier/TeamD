@@ -98,73 +98,35 @@ const Overlay = (): JSX.Element => {
   };
 
   const [time, setTime] = useState(0);
-  
 
   const interval=50;
   useInterval(() => {
     mtime += interval;
-    
     if(mtime/1000 - time >= 1){
       setTime(time+1);
     } 
   }, interval);
 
-  const handleChange = (e:any) => {setTime(Number(e.target.value)); mtime = Number(e.target.value)*1000}
+  const handleChange = (e:any) => {
+    setTime(Number(e.target.value));
+    mtime = Number(e.target.value)*1000;
+  }
+
+  const curTime= secToTime(time);
+  const finTime = secToTime(endtime);
+
   
-  console.log(mtime);
-
-
-  const Wrapper = React.memo<{ value:number }>(
-    ({ value }) => {
-      console.log(value)
-      //console.log(Math.floor(time/1000))
-      return(
-        <div>
-          <input type="range" id="volume" name="volume" min="0" max={100} value={ value } onChange={handleChange} />
-        <div className={Style.container}>
-      <div></div>
-
-      <button className={Style.button_2} onClick={handleOnClickCount}>
-      
-      </button>
-
-      <span></span>
-
-      {/* <input type="range" id="volume" name="volume" min="0" max={100} value={ value } onChange={handleChange} /> */}
-      {stamps.map(({ stamp_id, img_url }) => {
-        return (
-          <div className={Style.wrapper}>
-            <button className={Style.button}>
-              <img
-                className={Style.image}
-                src={img_url}
-                alt="new"
-                onClick={() => handleOnClickStamp(stamp_id)}
-              />
-            </button>
-          </div>
-        );
-      })}
-
-      <div></div>
-    </div>
-    </div>
-
-      )
-    }
-  )
- 
-
-//< Wrapper value = {time} />
-    const curTime= secToTime(time);
-    const finTime = secToTime(endtime);
+  const showTime=(time:Time)=>{
+    return(
+      <span>{toTwoDigit(time.hour)}:{toTwoDigit(time.minute)}:{toTwoDigit(time.second)}</span>
+    )
+  }
   return (
     <div>
-        <input type="range" id="volume" name="volume" min="0" max={100} value={ time } onChange={handleChange} />
-        {finTime.hour > 0 && <span>{toTwoDigit(curTime.hour)}:</span>}
-          {toTwoDigit(curTime.minute)}:{toTwoDigit(curTime.second)}/
-          {finTime.hour > 0 && <span>{toTwoDigit(finTime.hour)}:</span>}
-          {toTwoDigit(finTime.minute)}:{toTwoDigit(finTime.second)}
+        <div className={Style.timebar}>
+          <input type="range" id="volume" name="volume" min="0" max={100} value={ time } onChange={handleChange} />
+          {showTime(curTime)}/{showTime(finTime)}
+        </div>
       <div className={Style.container}>
       <div></div>
 
@@ -173,7 +135,7 @@ const Overlay = (): JSX.Element => {
 
       <span></span>
 
-      {/* <input type="range" id="volume" name="volume" min="0" max={100} value={ value } onChange={handleChange} /> */}
+  
       {stamps.map(({ stamp_id, img_url }) => {
         return (
           <div className={Style.wrapper}>
