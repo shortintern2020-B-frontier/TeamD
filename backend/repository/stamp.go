@@ -3,11 +3,10 @@ package repository
 import (
     "fmt"
     "github.com/jmoiron/sqlx"
-	  "errors"
-	  "fmt"
-	
-	  "github.com/jmoiron/sqlx"
-   
+    "errors"
+    "fmt"
+
+    "github.com/jmoiron/sqlx"
     "github.com/shortintern2020-B-frontier/TeamD/model"
 )
 
@@ -26,12 +25,13 @@ func FindStamp (db *sqlx.Tx, id int) (*int, error){
 	return &a, nil
 }
 
-// データベースから
+// Written by Yuto Kojima
+// select stamps that mutch conditions
 func SelectStamps(db *sqlx.DB, ellapsed_time int, room_id int, end_time int) ([]model.Stamp, error) {
     stamps := make([]model.Stamp, 0) 
-  
+
     SQLSent, flag := GenerateSQLSent(ellapsed_time, room_id, end_time)
-    
+
     // 埋め込み引数の個数で分岐
     switch flag {
         case true: 
@@ -49,6 +49,7 @@ func SelectStamps(db *sqlx.DB, ellapsed_time int, room_id int, end_time int) ([]
     return stamps, nil
 }
 
+// Written by Yuto Kojima
 func GenerateSQLSent(ellapsed_time int, room_id int, end_time int) (string, bool) {
     // SQL文を生成
     flag := true		// 条件分岐 上二つどちらかならtrue, 下ならfalse

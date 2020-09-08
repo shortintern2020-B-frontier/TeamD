@@ -1,3 +1,5 @@
+// Written by Yuto Kojima
+
 package controller
 
 import (
@@ -16,6 +18,7 @@ func NewRoom(db *sqlx.DB) *Room {
     return &Room{db: db}
 }
 
+// find rooms that mutch the conditions
 func (room *Room) FindAllRooms(w http.ResponseWriter, r *http.Request) (int, interface{}, error) {
     rooms, err := repository.AllRooms(room.db)
 
@@ -26,5 +29,3 @@ func (room *Room) FindAllRooms(w http.ResponseWriter, r *http.Request) (int, int
 
     return http.StatusOK, rooms, nil
 }
-
-

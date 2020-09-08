@@ -1,8 +1,9 @@
+// Written by Yuto Kojima
+
 package model
 
-// エラーチェックのための仮ルーム型
-
+// temp-room type
 type RoomTemp struct {
-	  RoomID int `db:"id"`
-		EndTime int `db:"end_time"`
+    RoomID int `db:"id"`
+    EndTime int `db:"end_time"`
 }

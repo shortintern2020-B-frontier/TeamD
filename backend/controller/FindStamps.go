@@ -1,3 +1,5 @@
+// Written by Yuto Kojima
+
 package controller
 
 import (
@@ -20,15 +22,15 @@ func NewStamp(db *sqlx.DB) *Stamp{
     return &Stamp{db: db}
 }
 
-// 条件に合うスタンプを取得
+// find stamps that mutch the conditions
 func (stamp *Stamp) FindStamps(w http.ResponseWriter, r *http.Request) (int, interface{}, error){
 
-    // 変数取得して数値に変換
+    // convert int -> string
     ellapsed_time, _ := strconv.Atoi(r.FormValue("ellapsed_time"))
     vars := mux.Vars(r)
     room_id, _ := strconv.Atoi(vars["room_id"])
 
-    // 部屋が存在しなかった時にエラーを投げる処理
+    // throw error when the rooms does't exist
     rooms := make([]model.RoomTemp, 0)
     if err := stamp.db.Select(&rooms, "select id, end_time from room where id = ?", room_id); err != nil {
         fmt.Printf("%s", err)
@@ -36,11 +38,11 @@ func (stamp *Stamp) FindStamps(w http.ResponseWriter, r *http.Request) (int, int
     }
 
     switch {
-        // 部屋がない時
+        // no rooms
         case len(rooms) <= 0:
             return http.StatusNotFound, nil, nil
 
-        // 部屋が二個以上存在する時
+        // two or more rooms exist
         case len(rooms) >= 2:
             return http.StatusInternalServerError, nil, nil
     }
