@@ -1,12 +1,8 @@
 package repository
 
 import (
-    "fmt"
     "github.com/jmoiron/sqlx"
     "errors"
-    "fmt"
-
-    "github.com/jmoiron/sqlx"
     "github.com/shortintern2020-B-frontier/TeamD/model"
 )
 
