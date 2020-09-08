@@ -22,7 +22,7 @@ func SelectStamps(db *sqlx.DB, ellapsed_time int, room_id int, end_time int) ([]
         case false:
             if err := db.Select(&stamps, SQLSent, room_id, ellapsed_time, ellapsed_time); err != nil {
 
-							  return nil, err
+                return nil, err
             }
     }
 
