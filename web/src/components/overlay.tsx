@@ -86,7 +86,7 @@ const Overlay = (): JSX.Element => {
 
   const Wrapper = React.memo<{ value:number }>(
     ({ value }) => {
-      console.log('render')
+      console.log(value)
       //console.log(Math.floor(time/1000))
       return(
         <div className={Style.container}>
@@ -98,9 +98,6 @@ const Overlay = (): JSX.Element => {
 
       <span></span>
 
-      {/* <div>
-        {count} {stamp.stamp_id} {stamp.ptime}
-      </div> */}
       <input type="range" id="volume" name="volume" min="0" max={10} value={ value } onChange={handleChange} />
 
       {stamps.map(({ stamp_id, img_url }) => {
@@ -124,9 +121,9 @@ const Overlay = (): JSX.Element => {
       )
     }
   )
+ 
 
-
-
+//< Wrapper value = {time} />
   return (
     < Wrapper value = {time} />
   );
