@@ -1,5 +1,8 @@
+// Written by Yuto Kojima
+
 package model
 
+// room type
 type Room struct {
     ID int `db:"id" json:"room_id"`
     Title string `db:"title" json:"title"`
