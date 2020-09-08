@@ -264,39 +264,36 @@ const Overlay = (): JSX.Element => {
       </div>
       <div className={Style.container}>
         <span />
-      <div className={Style.backHome}>
-        <button className={Style.button_2} onClick={handleOnClickBackHome}>
-          ＜
-        </button>
-      </div>
+        <div className={Style.backHome}>
+          <button className={Style.button_2} onClick={handleOnClickBackHome}>
+            ＜
+          </button>
+        </div>
 
-      <span />
+        <span />
 
-      <div className={Style.stamps}>
+        <div className={Style.stamps}>
+          {stamps.map(({ stamp_id, img_url, text }) => {
+            return (
+              <div className={Style.wrapper}>
+                <button
+                  className={Style.button}
+                  onClick={() => handleOnClickStamp(stamp_id)}
+                >
+                  {text}
 
-        {stamps.map(({ stamp_id, img_url, text }) => {
-          return (
-            <div className={Style.wrapper}>
-              <button
-                className={Style.button}
-                onClick={() => handleOnClickStamp(stamp_id)}
-              >
-                {text}
-
-              </button>
-            </div>
-          );
-        })}
-        
-        <canvas ref={canvasRef} className={Style.canvas} />
-      </div>
+                </button>
+              </div>
+            );
+          })}
+          <canvas ref={canvasRef} className={Style.canvas} />
+        </div>
       </div>
       </div>
-      
 
       <div className={Style.chart}>
-      <Pie data={data} options={chart_options} width={300} height={300} />
-    </div>
+        <Pie data={data} options={chart_options} width={300} height={300} />
+      </div>
 
     </div>
     
