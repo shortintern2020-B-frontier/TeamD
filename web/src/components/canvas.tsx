@@ -221,9 +221,6 @@ const Canvas = () => {
       stageHeight
     );
     setCanvasDrawing(newCanvasDrawing);
-    // for (let i = 0; i < 10; i++) {
-    //   newCanvasDrawing.drawPeople();
-    // }
   }, [windowSize]);
 
   useEffect(() => {
