@@ -38,6 +38,7 @@ class CanvasDrawing {
     this.stampContext = stampContext;
     this.stamps = [] as Stamps[];
     this.drawStage();
+    this.showStampFromPeople();
   }
 
   drawStage = (): void => {
@@ -45,13 +46,19 @@ class CanvasDrawing {
     const context = this.context;
 
     // ステージ部分の描画
-    this.context.fillStyle = "#B3B7AC";
-    this.context.fillRect(
+    context.fillStyle = "#B3B7AC";
+    context.fillRect(
       window.innerWidth * 0.1,
       0,
       window.innerWidth * 0.8,
       this.stageHeight
     );
+
+    context.strokeStyle = "black";
+    context.stroke();
+
+    context.fillStyle = "black";
+    context.fill();
 
     // 右の線の描画
     context.moveTo(window.innerWidth * 0.1, this.stageHeight);
@@ -161,7 +168,7 @@ class CanvasDrawing {
     context.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
     const newStamps = this.stamps.map(({ x, y, text }) => {
-      const randomValues = { max: 40, min: -40 };
+      const randomValues = { max: 10, min: -10 };
       const randomLeft = Math.floor(
         Math.random() * (randomValues.max - randomValues.min) + randomValues.min
       );
@@ -177,7 +184,6 @@ class CanvasDrawing {
       return { x: left, y: top, text } as Stamps;
     });
     this.stamps = newStamps.filter(({ x, y }) => x > 0 && y > 0);
-    console.log(this.stamps);
     window.requestAnimationFrame((ts) => this.showStampFromPeople(ts));
   };
 
@@ -215,12 +221,9 @@ const Canvas = () => {
       stageHeight
     );
     setCanvasDrawing(newCanvasDrawing);
-    newCanvasDrawing.showStampFromPeople();
-
-    for (let i = 0; i < 10; i++) {
-      newCanvasDrawing.drawPeople();
-    }
-    if (!canvasDrawing) return;
+    // for (let i = 0; i < 10; i++) {
+    //   newCanvasDrawing.drawPeople();
+    // }
   }, [windowSize]);
 
   useEffect(() => {
@@ -245,6 +248,7 @@ const Canvas = () => {
     const ramdomId = Math.floor(
       Math.random() * (randomValues.max - randomValues.min) + randomValues.min
     );
+    canvasDrawing.drawPeople();
     canvasDrawing.setStamp(ramdomId);
   };
 
@@ -259,7 +263,14 @@ const Canvas = () => {
         ref={canvasStampRef}
         width={window.innerWidth}
         height={window.innerHeight}
-        style={{ position: "fixed", top: 0, left: 0, bottom: 0, right: 0 }}
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          bottom: 50,
+          right: 0,
+          zIndex: 10,
+        }}
         onClick={handleOnClickCanvas}
       />
     </>
