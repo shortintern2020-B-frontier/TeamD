@@ -2,13 +2,16 @@
 package repository
 
 import (
-    "github.com/jmoiron/sqlx"
+	"database/sql"
 
+	"github.com/jmoiron/sqlx"
+	
+	"github.com/shortintern2020-B-frontier/TeamD/model"
 )
 
-func CreateFeeling (db *sqlx.Tx, room_id int, stamp_id int, ellapsed_time int) (result sql.Result, err error){
+func CreateFeeling (db *sqlx.Tx, feeling *model.Feeling) (result sql.Result, err error){
 	stmt, err := db.Prepare(`
-	INSERT INTO feeling (room_id, stamp_id, ellapsed_time) VAUES(?, ?, ?)
+	INSERT INTO feeling (room_id, stamp_id, ellapsed_time) VALUES(?, ?, ?)
 	`)
 	if err != nil {
 		return nil, err
@@ -18,5 +21,5 @@ func CreateFeeling (db *sqlx.Tx, room_id int, stamp_id int, ellapsed_time int) (
 			err = closeErr
 		}
 	}()
-	return stmt.Exec(room_id, stamp_id, ellapsed_time)
+	return stmt.Exec(feeling.RoomId, feeling.StampId, feeling.EllapsedTime)
 }

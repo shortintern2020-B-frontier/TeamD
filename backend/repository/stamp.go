@@ -9,17 +9,19 @@ import (
     "github.com/shortintern2020-B-frontier/TeamD/model"
 )
 
+// Written by Taishi Hosokawa
+// Find a stamp that has gien id
 func FindStamp (db *sqlx.Tx, id int) (*int, error){
-	var a *int
-	if err := db.Get(a, `
+	var a int
+	if err := db.Get(&a, `
 	SELECT id FROM stamp WHERE id = ?
 	`, id); err != nil {
 		return nil, err
 	}
-	if a == nil {
+	if a == 0 {
 		return nil, errors.New("specified id")
 	}
-	return a, nil
+	return &a, nil
 }
 
 // データベースから

@@ -21,26 +21,26 @@ func AllRooms(db *sqlx.DB) ([]model.Room, error) {
 
 //Written by Taishi Hosokawa
 func FindRoom(db *sqlx.Tx, id int) (*int, error) {
-    var a *int
-    if err := db.Get(a, `
+    var a int
+    if err := db.Get(&a, `
     SELECT id FROM room WHERE id = ?
     `, id); err != nil {
         return nil, err
     }
-    if a == nil {
+    if a == 0 {
         return nil, errors.New("specified room does not exist")
     }
-    return a, nil
+    return &a, nil
 }
 
 // Written by Taishi Hosokawa
 func FindRoomEndTime(db *sqlx.Tx, id int) (*int, error) {
-    var endtime *int 
-    if err := db.Get(endtime,`
+    var endtime int 
+    if err := db.Get(&endtime,`
     SELECT end_time FROM room WHERE id = ?
     `, id); err != nil {
         return nil, errors.New("specified room does not exist")
     }
 
-    return endtime, nil
+    return &endtime, nil
 }
