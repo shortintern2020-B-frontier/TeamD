@@ -50,6 +50,13 @@
   color: #333;
 }
 
+
+.chart {
+  position: absolute;
+  top: 60px;
+  right: 20%;
+}
+
 .backHome {
   display: flex;
 }

@@ -1,3 +1,4 @@
+import { Pie } from "react-chartjs-2";
 import React, { useState, useRef, useEffect } from "react";
 import { useParams, Link, useHistory } from "react-router-dom";
 
@@ -45,6 +46,28 @@ export const stamps = [
   },
 ];
 
+const data = {
+  labels: ["👏", "😡", "💕", "🎶", "😱", "🥺"],
+  datasets: [
+    {
+      chartColors: "rgba(75,192,192,1)",
+      data: [30, 25, 20, 15, 10, 90],
+      backgroundColor: [
+        "#feca57",
+        "#ff6b6b",
+        "#ff9ff3",
+        "#00d2d3",
+        "#5f27cd",
+        "#54a0ff",
+      ],
+    },
+  ],
+};
+
+const options = {
+  maintainAspectRatio: false,
+  responsive: false,
+};
 interface size {
   width: number;
   height: number;
