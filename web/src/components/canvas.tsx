@@ -54,12 +54,6 @@ class CanvasDrawing {
       this.stageHeight
     );
 
-    context.strokeStyle = "black";
-    context.stroke();
-
-    context.fillStyle = "black";
-    context.fill();
-
     // 右の線の描画
     context.moveTo(window.innerWidth * 0.1, this.stageHeight);
     context.lineTo(0, this.stageHeight + 120);
@@ -75,8 +69,7 @@ class CanvasDrawing {
     context.stroke();
   };
 
-  drawPeople = (): void => {
-    const context = this.context;
+  addPeople = (): void => {
     const targetPosition = this.searchEmptyCell();
     if (!targetPosition) return;
     const { x, y } = targetPosition;
@@ -89,39 +82,72 @@ class CanvasDrawing {
     );
     this.vram = newVram;
 
-    const randomValues = { max: 50, min: 0 };
-    const randomLeft = Math.floor(
-      Math.random() * (randomValues.max - randomValues.min) + randomValues.min
-    );
-    const randomTop = Math.floor(
-      Math.random() * (randomValues.max - randomValues.min) + randomValues.min
-    );
-
-    const left = window.innerWidth - this.cell.width * x + randomLeft;
-    const top = window.innerHeight - this.cell.height * y + randomTop;
-
-    context.strokeStyle = "black";
-    context.stroke();
-
-    context.fillStyle = "black";
-    context.fill();
-
-    context.beginPath();
-    context.moveTo(left, top);
-    context.lineTo(left - 50, top - 150);
-    context.lineTo(left - 100, top);
-    context.closePath();
-
-    context.strokeStyle = "black";
-    context.stroke();
-
-    context.fillStyle = "black";
-    context.fill();
-    context.beginPath();
-    context.arc(left - 50, top - 150, 30, 0, 2 * Math.PI);
-    context.closePath();
-    context.fill();
+    this.drawPeople();
   };
+
+  deletePeople = (): void => {
+    const targetPosition = this.searchFilledCell();
+    if (!targetPosition) return;
+    const { x, y } = targetPosition;
+    const newVram = this.vram.map((horizontalCells, i) =>
+      horizontalCells.map((cell, l) => {
+        if (i === y && l === x) {
+          return 0;
+        }
+        if (cell === 1) return 1;
+        return 0;
+      })
+    );
+    this.vram = newVram;
+
+    this.drawPeople();
+  };
+
+  drawPeople() {
+    const context = this.context;
+    context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    this.drawStage();
+
+    this.vram.forEach((horizontalCells, y) => {
+      horizontalCells.forEach((cell, x) => {
+        if (cell === 0) return;
+        const randomValues = { max: 50, min: 0 };
+        const randomLeft = Math.floor(
+          Math.random() * (randomValues.max - randomValues.min) +
+            randomValues.min
+        );
+        const randomTop = Math.floor(
+          Math.random() * (randomValues.max - randomValues.min) +
+            randomValues.min
+        );
+
+        const left = window.innerWidth - this.cell.width * x;
+        const top = window.innerHeight - this.cell.height * y;
+
+        context.strokeStyle = "black";
+        context.stroke();
+
+        context.fillStyle = "black";
+        context.fill();
+
+        context.beginPath();
+        context.moveTo(left, top);
+        context.lineTo(left - 50, top - 150);
+        context.lineTo(left - 100, top);
+        context.closePath();
+
+        context.strokeStyle = "black";
+        context.stroke();
+
+        context.fillStyle = "black";
+        context.fill();
+        context.beginPath();
+        context.arc(left - 50, top - 150, 30, 0, 2 * Math.PI);
+        context.closePath();
+        context.fill();
+      });
+    });
+  }
 
   createVram = (stageHeight: number): number[][] => {
     const horizontalCellLength = Math.floor(
@@ -221,6 +247,10 @@ const Canvas = () => {
       stageHeight
     );
     setCanvasDrawing(newCanvasDrawing);
+
+    for (let i = 0; i < 10; i++) {
+      newCanvasDrawing.addPeople();
+    }
   }, [windowSize]);
 
   useEffect(() => {
@@ -245,7 +275,8 @@ const Canvas = () => {
     const ramdomId = Math.floor(
       Math.random() * (randomValues.max - randomValues.min) + randomValues.min
     );
-    canvasDrawing.drawPeople();
+
+    // canvasDrawing.deletePeople();
     canvasDrawing.setStamp(ramdomId);
   };
 
