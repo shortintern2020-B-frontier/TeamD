@@ -9,6 +9,7 @@ interface Stamps {
   x: number;
   y: number;
   text: string;
+  opacity: number;
 }
 
 const stamps = [
@@ -192,21 +193,20 @@ class CanvasDrawing {
   showStampFromPeople = (ts?: number): void => {
     const context = this.stampContext;
     context.clearRect(0, 0, window.innerWidth, window.innerHeight);
-  const newStamps = this.stamps.map(({ x, y, text }) => {
+    const newStamps = this.stamps.map(({ x, y, text, opacity }) => {
       const randomValues = { max: 10, min: -10 };
       const randomLeft = Math.floor(
         Math.random() * (randomValues.max - randomValues.min) + randomValues.min
       );
+      context.fillStyle = `rgba(255, 255, 255, ${opacity})`;
 
-      let left = 0,
-        top = 0;
-
-      left = x - randomLeft / 10;
-      top = y - 1;
+      const left = x - randomLeft / 10,
+        top = y - 1,
+        newOpacity = opacity - 0.0025;
 
       context.font = "28px serif";
       context.fillText(text, left, top);
-      return { x: left, y: top, text } as Stamps;
+      return { x: left, y: top, text, opacity: newOpacity } as Stamps;
     });
     this.stamps = newStamps.filter(({ x, y }) => x > 0 && y > 0);
     window.requestAnimationFrame((ts) => this.showStampFromPeople(ts));
@@ -219,17 +219,26 @@ class CanvasDrawing {
     const { x, y } = targetPosition;
     const left = window.innerWidth - this.cell.width * x;
     const top = window.innerHeight - this.cell.height * y;
-    this.stamps.push({ x: left - 25, y: top - 175, text });
+    this.stamps.push({ x: left - 25, y: top - 175, text, opacity: 1 });
   };
 }
 
-const Canvas = () => {
+interface Canvas {
+  stampDatas: { stamp_id: number }[];
+}
+
+const Canvas = ({ stampDatas }: Canvas) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvasStampRef = useRef<HTMLCanvasElement>(null);
   const [windowSize, setWindowSize] = useState({} as size);
   const [canvasDrawing, setCanvasDrawing] = useState<CanvasDrawing>();
 
   const stageHeight = 400;
+
+  if (canvasDrawing)
+    stampDatas.forEach(({ stamp_id }) => {
+      canvasDrawing.setStamp(stamp_id);
+    });
 
   useEffect(() => {
     const canvas = canvasRef.current;

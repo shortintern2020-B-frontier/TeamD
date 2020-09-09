@@ -6,11 +6,11 @@ import Canvas from "../components/canvas";
 
 import Style from "../css/room.module.css";
 
-
 const Room = (): JSX.Element => {
   const { id } = useParams();
 
   const [isShowOverlay, setIsShowOverlay] = useState(false);
+  const [stampDatas, setStampDatas] = useState([] as { stamp_id: number }[]);
 
   const handleOnMouseEnter = () => {
     setIsShowOverlay(true);
@@ -22,9 +22,9 @@ const Room = (): JSX.Element => {
   return (
     <>
       <div className={Style.container} onMouseEnter={handleOnMouseEnter}>
-        <Canvas />
+        <Canvas stampDatas={stampDatas} />
       </div>
-      <Overlay />
+      <Overlay setStampDatas={setStampDatas} />
     </>
   );
 };
