@@ -99,12 +99,9 @@ func (audience *Audience) UpdateAudience(w http.ResponseWriter, r *http.Request)
 	a, err := repository.FindAudience(audience.db, room_id, ellapsed_time.Time)
 	var result sql.Result
 	if err != nil {
-		result, err = repository.CreateAudience(audience.db, room_id, ellapsed_time.Time)
+		return http.StatusInternalServerError, nil, nil
 	} else {
 		result, err = repository.UpdateAudience(audience.db, a.Audience+1, room_id, ellapsed_time.Time)
-	}
-	if err != nil {
-		return http.StatusInternalServerError, nil, nil
 	}
 	rows, _ := result.RowsAffected()
 	return http.StatusOK, rows, nil
