@@ -2,6 +2,7 @@ import { Pie } from "react-chartjs-2";
 import React, { useState, useRef, useEffect } from "react";
 import { useParams, Link, useHistory } from "react-router-dom";
 import "chart.piecelabel.js";
+import axios from "axios";
 
 import Style from "../css/overlay.module.css";
 import useInterval from "use-interval";
@@ -16,7 +17,6 @@ interface Time {
   minute: number;
   second: number;
 }
-const endtime = 40000;
 let mtime = 0;
 
 const toTwoDigit = (num: number): String => {
@@ -187,6 +187,7 @@ interface Overlay {
 const Overlay = ({ setStampDatas }: Overlay): JSX.Element => {
   const [stamp, setStamp] = useState({} as Stamp);
   const [time, setTime] = useState(0);
+  const [endtime,setEndtime]=useState<number>(0);
   const [canvasDrawing, setCanvasDrawing] = useState<CanvasDrawing>();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { id } = useParams();
@@ -202,6 +203,7 @@ const Overlay = ({ setStampDatas }: Overlay): JSX.Element => {
 
   useEffect(() => {
     mtime = 0;
+    getEndTime();
   }, []);
 
   const handleOnClickBackHome = () => {
@@ -221,11 +223,11 @@ const Overlay = ({ setStampDatas }: Overlay): JSX.Element => {
     headers.append("Content-Type", "application/json");
     headers.append("Accept", "application/json");
     headers.append("Access-Control-Allow-Origin", "http://localhost:1996");
-    headers.append("Access-Control-Allow-Credentials", "true");
-    headers.append(
-      "Access-Control-Allow-Headers",
-      "X-Requested-With, Content-Type, Authorization, Origin, Accept"
-    );
+    //headers.append("Access-Control-Allow-Credentials", "true");
+    //headers.append(
+    //  "Access-Control-Allow-Headers",
+    //  "X-Requested-With, Content-Type, Authorization, Origin, Accept"
+    //);
 
     const options: RequestInit = {
       headers: headers,
@@ -266,6 +268,18 @@ const Overlay = ({ setStampDatas }: Overlay): JSX.Element => {
       setStampDatas(json);
     } else {
       setStampDatas([] as { stamp_id: number }[]);
+    }
+  };
+
+  const getEndTime = async ()=>{
+    //fetchだとこけるので、axiosでやりました。
+    const url=`http://localhost:1996/api/room/${id}`
+    const res=await axios.get(url);
+
+    if (res.status === 200) {
+      setEndtime(res.data.end_time/1000);
+    } else {
+      console.log("err=>",res);
     }
   };
 
