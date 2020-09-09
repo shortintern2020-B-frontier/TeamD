@@ -287,7 +287,7 @@ const Overlay = ({ setStampDatas,setAudienceSize }: Overlay): JSX.Element => {
     };
     
     const res = await fetch(
-      `http://localhost:1996/api/room/${id}/audience?ellapsed_time=${time}`,
+      `http://localhost:1996/api/room/${id}/audience?ellapsed_time=${mtime}`,
       options
       );
 
@@ -309,6 +309,8 @@ const Overlay = ({ setStampDatas,setAudienceSize }: Overlay): JSX.Element => {
     if (mtime / 1000 - time >= 1) {
       setTime(time + 1);
       getStampDatas();
+    }
+    if (mtime % 60000 == 0) {
       getAudienceSize();
     }
   }, interval);
