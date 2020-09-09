@@ -4,6 +4,7 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+// return audience.count
 func FindAudience (db *sqlx.DB, id, ellapsed_time int) (*int, error) {
 	var audience int
 	if err := db.Get(&audience, `
