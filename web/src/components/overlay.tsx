@@ -1,5 +1,5 @@
 import { Pie } from "react-chartjs-2";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useReducer } from "react";
 import { useParams, Link, useHistory } from "react-router-dom";
 import "chart.piecelabel.js";
 
@@ -238,12 +238,7 @@ const Overlay = ({ stampDatas, setStampDatas }: Overlay): JSX.Element => {
     }
   };
 
-  const [stamp1, setStamp1] = useState(0);
-  const [stamp2, setStamp2] = useState(0);
-  const [stamp3, setStamp3] = useState(0);
-  const [stamp4, setStamp4] = useState(0);
-  const [stamp5, setStamp5] = useState(0);
-  const [stamp6, setStamp6] = useState(0);
+  const [stampId] = useState(Array(6).fill(0));
 
   const interval = 50;
   useInterval(() => {
@@ -254,17 +249,17 @@ const Overlay = ({ stampDatas, setStampDatas }: Overlay): JSX.Element => {
     }
     stampDatas.map(({ stamp_id }) => {
       if (stamp_id == 1) {
-        setStamp1(stamp1 + 1);
+        stampId[0] = stampId[0] + 1;
       } else if (stamp_id == 2) {
-        setStamp2(stamp2 + 1);
+        stampId[1] = stampId[1] + 1;
       } else if (stamp_id == 3) {
-        setStamp3(stamp3 + 1);
+        stampId[2] = stampId[2] + 1;
       } else if (stamp_id == 4) {
-        setStamp4(stamp4 + 1);
+        stampId[3] = stampId[3] + 1;
       } else if (stamp_id == 5) {
-        setStamp5(stamp5 + 1);
+        stampId[4] = stampId[4] + 1;
       } else {
-        setStamp6(stamp6 + 1);
+        stampId[5] = stampId[5] + 1;
       }
     });
   }, interval);
@@ -273,7 +268,15 @@ const Overlay = ({ stampDatas, setStampDatas }: Overlay): JSX.Element => {
     labels: ["👏", "😡", "💕", "🎶", "😱", "🥺"],
     datasets: [
       {
-        data: [stamp1, stamp2, stamp3, stamp4, stamp5, stamp6],
+        data: [
+          stampId[0],
+          stampId[1],
+          stampId[2],
+          stampId[3],
+          stampId[4],
+          stampId[5],
+        ],
+        // data: [0, 0, 0, 0, 0, 0],
         backgroundColor: [
           "#feca57",
           "#ff6b6b",
@@ -295,9 +298,6 @@ const Overlay = ({ stampDatas, setStampDatas }: Overlay): JSX.Element => {
     pieceLabel: {
       render: "label",
       fontSize: 25,
-    },
-    animation: {
-      duration: 0,
     },
   };
 
