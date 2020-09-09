@@ -21,7 +21,7 @@ const RoomThumnail:React.FC<Props>=({room})=>{
   return(
           <div className={styles.container}>
             <Link className={styles.itemText} to={"/room/"+room.room_id}>
-              <img src={imgSrc} width="300" height="300" alt="new" onError={()=>{setImgSrc(default_thumnail)}}/>
+              <img src={imgSrc} width="200" height="200" alt="new" onError={()=>{setImgSrc(default_thumnail)}}/>
             </Link>
             <div className={styles.itemText}><p>{room.title}</p> </div>
           </div>

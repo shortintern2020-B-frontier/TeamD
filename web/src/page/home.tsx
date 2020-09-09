@@ -1,6 +1,6 @@
 
 import React,{useState,useEffect} from "react";
-import axios,{AxiosResponse,AxiosError}from "axios"
+import axios from "axios"
 import styles from "../css/home.module.css"
 import home from "../css/home.module.css";
 import RoomThumnail from "../components/thumnail"
@@ -46,8 +46,8 @@ const HomePage = () => {
 
   return (
     <div>
-      <div>
-      <Logo />
+      <div className={styles.logContainer}>
+        <Logo />
       </div>
       <div className={styles.container}>
         <div className={styles.above}>
