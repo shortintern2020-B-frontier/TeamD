@@ -1,5 +1,5 @@
 import { Pie } from "react-chartjs-2";
-import React, { useState, useRef, useEffect, useReducer } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useParams, Link, useHistory } from "react-router-dom";
 import "chart.piecelabel.js";
 
@@ -37,36 +37,26 @@ const secToTime = (secTime: number): Time => {
 const stamps = [
   {
     stamp_id: 1,
-    img_url: "https://emojis.wiki/emoji-pics/apple/clapping-hands-apple.png",
     text: "👏",
   },
   {
     stamp_id: 2,
-    img_url:
-      "https://i.pinimg.com/originals/71/ea/47/71ea470cde8de51e87e9c84d0a0bf7f9.png",
     text: "😡",
   },
   {
     stamp_id: 3,
-    img_url:
-      "https://pics.prcm.jp/7fbe179d932a9/83247844/png/83247844_220x220.png",
     text: "💕",
   },
   {
     stamp_id: 4,
-    img_url:
-      "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/114/multiple-musical-notes_1f3b6.png",
     text: "🎶",
   },
   {
     stamp_id: 5,
-    img_url:
-      "https://i.pinimg.com/originals/81/46/85/8146853e8ea68e606571fa8af44ca65c.png",
     text: "😱",
   },
   {
     stamp_id: 6,
-    img_url: "https://www.emojiall.com/images/120/apple/1f97a.png",
     text: "🥺",
   },
 ];
@@ -190,11 +180,11 @@ const Overlay = ({ stampDatas, setStampDatas }: Overlay): JSX.Element => {
     headers.append("Content-Type", "application/json");
     headers.append("Accept", "application/json");
     headers.append("Access-Control-Allow-Origin", "http://localhost:1996");
-    headers.append("Access-Control-Allow-Credentials", "true");
-    headers.append(
-      "Access-Control-Allow-Headers",
-      "X-Requested-With, Content-Type, Authorization, Origin, Accept"
-    );
+    // headers.append("Access-Control-Allow-Credentials", "true");
+    // headers.append(
+    //   "Access-Control-Allow-Headers",
+    //   "X-Requested-With, Content-Type, Authorization, Origin, Accept"
+    // );
 
     const options: RequestInit = {
       headers: headers,
@@ -214,11 +204,11 @@ const Overlay = ({ stampDatas, setStampDatas }: Overlay): JSX.Element => {
     headers.append("Content-Type", "application/json");
     headers.append("Accept", "application/json");
     headers.append("Access-Control-Allow-Origin", "http://localhost:1996");
-    headers.append("Access-Control-Allow-Credentials", "true");
-    headers.append(
-      "Access-Control-Allow-Headers",
-      "X-Requested-With, Content-Type, Authorization, Origin, Accept"
-    );
+    // headers.append("Access-Control-Allow-Credentials", "true");
+    // headers.append(
+    //   "Access-Control-Allow-Headers",
+    //   "X-Requested-With, Content-Type, Authorization, Origin, Accept"
+    // );
 
     const options: RequestInit = {
       headers: headers,
@@ -238,29 +228,99 @@ const Overlay = ({ stampDatas, setStampDatas }: Overlay): JSX.Element => {
     }
   };
 
-  const [stampId] = useState(Array(6).fill(0));
+  // const [stampId] = useState(Array(6).fill(1));
+  // var flag = 0;
+  // const interval = 50;
+  // useInterval(() => {
+  //   mtime += interval;
+  //   if (mtime / 1000 - time >= 1) {
+  //     setTime(time + 1);
+  //     getStampDatas();
+  //   }
+  //   stampDatas.map(({ stamp_id }) => {
+  //     if (flag == 0) {
+  //       stampId.fill(0);
+  //       flag = 1;
+  //     }
+  //     if (0 < stamp_id && stamp_id < 7) {
+  //       stampId[stamp_id - 1] += 1;
+  //     }
+  //   });
+  // }, interval);
 
+  // const data = {
+  //   labels: ["👏", "😡", "💕", "🎶", "😱", "🥺"],
+  //   datasets: [
+  //     {
+  //       data: [
+  //         stampId[0],
+  //         stampId[1],
+  //         stampId[2],
+  //         stampId[3],
+  //         stampId[4],
+  //         stampId[5],
+  //       ],
+  //       backgroundColor: [
+  //         "#feca57",
+  //         "#ff6b6b",
+  //         "#ff9ff3",
+  //         "#00d2d3",
+  //         "#5f27cd",
+  //         "#54a0ff",
+  //       ],
+  //     },
+  //   ],
+  // };
+
+  // const [stampCount] = useState(Array(6).fill(1));
+  // var flag = 0;
+  // const interval = 50;
+  // useInterval(() => {
+  //   mtime += interval;
+  //   if (mtime / 1000 - time >= 1) {
+  //     setTime(time + 1);
+  //     getStampDatas();
+  //     stampDatas.map(({ stamp_id }) => {
+  //       if (flag == 0) {
+  //         stampCount.fill(0);
+  //         flag = 1;
+  //       }
+  //       if (0 < stamp_id && stamp_id < 7) {
+  //         stampCount[stamp_id - 1] += 1;
+  //       }
+  //     });
+  //   }
+  // }, interval);
+
+  const [stampCount] = useState(Array(10));
+  const [stampId] = useState(Array(6).fill(1));
+
+  var flag1 = 0;
+  var flag2 = 0;
   const interval = 50;
   useInterval(() => {
     mtime += interval;
     if (mtime / 1000 - time >= 1) {
       setTime(time + 1);
       getStampDatas();
+      stampDatas.map(({ stamp_id }) => {
+        if (flag1 == 0) {
+          stampCount.fill(0);
+          flag1 = 1;
+        }
+        stampCount.push(stampDatas);
+      });
     }
-    stampDatas.map(({ stamp_id }) => {
-      if (stamp_id == 1) {
-        stampId[0] = stampId[0] + 1;
-      } else if (stamp_id == 2) {
-        stampId[1] = stampId[1] + 1;
-      } else if (stamp_id == 3) {
-        stampId[2] = stampId[2] + 1;
-      } else if (stamp_id == 4) {
-        stampId[3] = stampId[3] + 1;
-      } else if (stamp_id == 5) {
-        stampId[4] = stampId[4] + 1;
-      } else {
-        stampId[5] = stampId[5] + 1;
-      }
+    stampCount.map(() => {
+      stampDatas.map(({ stamp_id }) => {
+        if (flag2 == 0) {
+          stampId.fill(0);
+          flag2 = 1;
+        }
+        if (0 < stamp_id && stamp_id < 7) {
+          stampId[stamp_id - 1] += 1;
+        }
+      });
     });
   }, interval);
 
@@ -276,7 +336,6 @@ const Overlay = ({ stampDatas, setStampDatas }: Overlay): JSX.Element => {
           stampId[4],
           stampId[5],
         ],
-        // data: [0, 0, 0, 0, 0, 0],
         backgroundColor: [
           "#feca57",
           "#ff6b6b",
@@ -345,7 +404,7 @@ const Overlay = ({ stampDatas, setStampDatas }: Overlay): JSX.Element => {
           <span />
 
           <div className={Style.stamps}>
-            {stamps.map(({ stamp_id, img_url, text }) => {
+            {stamps.map(({ stamp_id, text }) => {
               return (
                 <div className={Style.wrapper}>
                   <button
