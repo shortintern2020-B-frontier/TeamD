@@ -187,7 +187,7 @@ interface Overlay {
 const Overlay = ({ setStampDatas }: Overlay): JSX.Element => {
   const [stamp, setStamp] = useState({} as Stamp);
   const [time, setTime] = useState(0);
-  const [endtime,setEndtime]=useState<number>(0);
+  const [endtime, setEndtime] = useState<number>(0);
   const [canvasDrawing, setCanvasDrawing] = useState<CanvasDrawing>();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { id } = useParams();
@@ -271,15 +271,15 @@ const Overlay = ({ setStampDatas }: Overlay): JSX.Element => {
     }
   };
 
-  const getEndTime = async ()=>{
+  const getEndTime = async () => {
     //fetchだとこけるので、axiosでやりました。
-    const url=`http://localhost:1996/api/room/${id}`
-    const res=await axios.get(url);
+    const url = `http://localhost:1996/api/room/${id}`;
+    const res = await axios.get(url);
 
     if (res.status === 200) {
-      setEndtime(res.data.end_time/1000);
+      setEndtime(res.data.end_time / 1000);
     } else {
-      console.log("err=>",res);
+      console.log("err=>", res);
     }
   };
 
