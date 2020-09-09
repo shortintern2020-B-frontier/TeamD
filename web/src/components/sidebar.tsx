@@ -1,6 +1,7 @@
 import React from "react";
 
 import Style from "../css/sidebar.module.css";
+import {Link} from "react-router-dom";
 import { FiSettings,FiFilm,FiLogOut,FiBook} from "react-icons/fi";//Feather icon
 
 const Sidebar = () =>{
@@ -10,7 +11,7 @@ const Sidebar = () =>{
                 <div className={Style.sidenav}>
                     <a href="#"><FiFilm /></a>
                     <a href="#"><FiSettings /></a>
-                    <a href="./author"><FiBook /></a>
+                    <Link to={"/author"}><FiBook/></Link>
                     <br/>
                     <br/>
                     <a href="#"><FiLogOut /></a>
