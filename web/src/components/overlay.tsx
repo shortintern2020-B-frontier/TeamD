@@ -272,26 +272,6 @@ const Overlay = ({ stampDatas, setStampDatas }: Overlay): JSX.Element => {
   //   ],
   // };
 
-  // const [stampCount] = useState(Array(6).fill(1));
-  // var flag = 0;
-  // const interval = 50;
-  // useInterval(() => {
-  //   mtime += interval;
-  //   if (mtime / 1000 - time >= 1) {
-  //     setTime(time + 1);
-  //     getStampDatas();
-  //     stampDatas.map(({ stamp_id }) => {
-  //       if (flag == 0) {
-  //         stampCount.fill(0);
-  //         flag = 1;
-  //       }
-  //       if (0 < stamp_id && stamp_id < 7) {
-  //         stampCount[stamp_id - 1] += 1;
-  //       }
-  //     });
-  //   }
-  // }, interval);
-
   const [stampCount] = useState(Array(10));
   const [stampId] = useState(Array(6).fill(1));
 
