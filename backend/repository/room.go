@@ -58,3 +58,27 @@ func FindRoomEndTime(db *sqlx.Tx, id int) (*int, error) {
 
     return &endtime, nil
 }
+
+func FindRoomDB(db *sqlx.DB, id int) (*int, error) {
+    var a int
+    if err := db.Get(&a, `
+    SELECT id FROM room WHERE id = ?
+    `, id); err != nil {
+        return nil, err
+    }
+    if a == 0 {
+        return nil, errors.New("specified room does not exist")
+    }
+    return &a, nil
+}
+
+func FindRoomEndTimeDB(db *sqlx.DB, id int) (*int, error) {
+    var endtime int 
+    if err := db.Get(&endtime,`
+    SELECT end_time FROM room WHERE id = ?
+    `, id); err != nil {
+        return nil, errors.New("specified room does not exist")
+    }
+
+    return &endtime, nil
+}
