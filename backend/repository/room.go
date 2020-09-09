@@ -33,6 +33,19 @@ func FindRoom(db *sqlx.Tx, id int) (*int, error) {
     return &a, nil
 }
 
+// Written by Yuto Kojima
+// returns the room info 
+func FindRoomInfo(db *sqlx.DB, id int) (interface{}, error) {
+    var roominfo model.RoomInfo 
+    if err := db.Get(&roominfo,`
+    SELECT end_time, title, id FROM room WHERE id = ?
+    `, id); err != nil {
+        return nil, errors.New("specified room does not exist")
+    }
+
+    return &roominfo, nil
+}
+
 // Written by Taishi Hosokawa
 // returns the end_time of room
 func FindRoomEndTime(db *sqlx.Tx, id int) (*int, error) {
