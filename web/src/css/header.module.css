@@ -1,9 +1,10 @@
 .logo {
-    background-color:black;
+    background-color:rgb(26, 26, 26, 0.5);
     width: 100vw;
     padding-top: 20px;
     padding-left: 20px;
     /* height: 10vh; */
+    position: fixed;
 }
 
 .logo img{

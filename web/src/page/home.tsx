@@ -47,7 +47,7 @@ const HomePage = () => {
   return (
     <div>
       <div>
-      <a href=""><Logo /></a>
+      <Logo />
       </div>
       <div className={styles.container}>
         <div className={styles.above}>
