@@ -182,7 +182,7 @@ class CanvasDrawing {
 
 interface Overlay {
   setStampDatas: (arg1: { stamp_id: number }[]) => void;
-  setAudienceSize: (arg1: { size: number }[]) => void;
+  setAudienceSize: (arg1: { aud_size: number }[]) => void;
 }
 
 const Overlay = ({ setStampDatas,setAudienceSize }: Overlay): JSX.Element => {
@@ -289,14 +289,15 @@ const Overlay = ({ setStampDatas,setAudienceSize }: Overlay): JSX.Element => {
     const res = await fetch(
       `http://localhost:1996/api/room/${id}/audience?ellapsed_time=${mtime}`,
       options
-      );
+    );
 
 
     if (res.status === 200) {
       const json = await res.json();
       setAudienceSize(json);
+      //console.log(json);
     } else {
-      setAudienceSize([] as { size: number }[]);
+      setAudienceSize([] as { aud_size: number }[]);
     }
 
   };

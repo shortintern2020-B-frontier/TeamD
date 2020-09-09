@@ -11,7 +11,7 @@ const Room = (): JSX.Element => {
 
   const [isShowOverlay, setIsShowOverlay] = useState(false);
   const [stampDatas, setStampDatas] = useState([] as { stamp_id: number }[]);
-  const [AudienceSize, setAudienceSize] = useState([] as { size: number }[]);
+  const [AudienceSize, setAudienceSize] = useState([] as { aud_size: number }[]);
 
   const handleOnMouseEnter = () => {
     setIsShowOverlay(true);
