@@ -10,7 +10,7 @@ const Sidebar = () =>{
                 <div className={Style.sidenav}>
                     <a href="#"><FiFilm /></a>
                     <a href="#"><FiSettings /></a>
-                    <a href="./Author"><FiBook /></a>
+                    <a href="./author"><FiBook /></a>
                     <br/>
                     <br/>
                     <a href="#"><FiLogOut /></a>
