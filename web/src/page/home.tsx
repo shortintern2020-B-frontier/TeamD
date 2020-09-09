@@ -5,6 +5,7 @@ import styles from "../css/home.module.css"
 import home from "../css/home.module.css";
 import RoomThumnail from "../components/thumnail"
 import Sidebar from "../components/sidebar";
+import Logo from "../components/header";
 import { useGlobalState } from "../"
 
 interface Room{
@@ -40,9 +41,14 @@ const HomePage = () => {
     toggleFirstRender();
   },[]);
 
+  
+
 
   return (
-    <>
+    <div>
+      <div>
+      <a href=""><Logo /></a>
+      </div>
       <div className={styles.container}>
         <div className={styles.above}>
           <Sidebar  />
@@ -54,7 +60,7 @@ const HomePage = () => {
         </div>
       </div>
       { firstRender && <div className={home.shutter} />}
-    </>
+    </div>
 
   );
 };
