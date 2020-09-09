@@ -182,10 +182,10 @@ class CanvasDrawing {
 
 interface Overlay {
   setStampDatas: (arg1: { stamp_id: number }[]) => void;
-  setAudienceSize: (arg1: { aud_size: number }[]) => void;
+  setAudienceSize: (arg1: number) => void;
 }
 
-const Overlay = ({ setStampDatas,setAudienceSize }: Overlay): JSX.Element => {
+const Overlay = ({ setStampDatas, setAudienceSize }: Overlay): JSX.Element => {
   const [stamp, setStamp] = useState({} as Stamp);
   const [time, setTime] = useState(0);
   const [canvasDrawing, setCanvasDrawing] = useState<CanvasDrawing>();
@@ -260,7 +260,7 @@ const Overlay = ({ setStampDatas,setAudienceSize }: Overlay): JSX.Element => {
     const res = await fetch(
       `http://localhost:1996/api/room/${id}/feeling?ellapsed_time=${time}`,
       options
-      );
+    );
 
     if (res.status === 200) {
       const json = await res.json();
@@ -285,24 +285,19 @@ const Overlay = ({ setStampDatas,setAudienceSize }: Overlay): JSX.Element => {
       method: "GET",
       mode: "no-cors",
     };
-    
+
     const res = await fetch(
       `http://localhost:1996/api/room/${id}/audience?ellapsed_time=${mtime}`,
       options
     );
 
-
     if (res.status === 200) {
-      const json = await res.json();
-      setAudienceSize(json);
-      //console.log(json);
+      const { audience } = await res.json();
+      setAudienceSize(audience);
     } else {
-      setAudienceSize([] as { aud_size: number }[]);
+      setAudienceSize(0);
     }
-
   };
-
-
 
   const interval = 50;
   useInterval(() => {
