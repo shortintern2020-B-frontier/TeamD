@@ -71,38 +71,6 @@ const stamps = [
   },
 ];
 
-const data = {
-  labels: ["👏", "😡", "💕", "🎶", "😱", "🥺"],
-  datasets: [
-    {
-      data: [30, 25, 20, 15, 10, 90],
-      backgroundColor: [
-        "#feca57",
-        "#ff6b6b",
-        "#ff9ff3",
-        "#00d2d3",
-        "#5f27cd",
-        "#54a0ff",
-      ],
-    },
-  ],
-};
-
-const chart_options = {
-  maintainAspectRatio: false,
-  responsive: false,
-  legend: {
-    display: false,
-  },
-  pieceLabel: {
-    render: "label",
-    fontSize: 25,
-  },
-  animation: {
-    duration: 0,
-  },
-};
-
 interface size {
   width: number;
   height: number;
@@ -181,10 +149,11 @@ class CanvasDrawing {
 }
 
 interface Overlay {
+  stampDatas: { stamp_id: number }[];
   setStampDatas: (arg1: { stamp_id: number }[]) => void;
 }
 
-const Overlay = ({ setStampDatas }: Overlay): JSX.Element => {
+const Overlay = ({ stampDatas, setStampDatas }: Overlay): JSX.Element => {
   const [stamp, setStamp] = useState({} as Stamp);
   const [time, setTime] = useState(0);
   const [canvasDrawing, setCanvasDrawing] = useState<CanvasDrawing>();
@@ -269,6 +238,13 @@ const Overlay = ({ setStampDatas }: Overlay): JSX.Element => {
     }
   };
 
+  const [stamp1, setStamp1] = useState(0);
+  const [stamp2, setStamp2] = useState(0);
+  const [stamp3, setStamp3] = useState(0);
+  const [stamp4, setStamp4] = useState(0);
+  const [stamp5, setStamp5] = useState(0);
+  const [stamp6, setStamp6] = useState(0);
+
   const interval = 50;
   useInterval(() => {
     mtime += interval;
@@ -276,7 +252,54 @@ const Overlay = ({ setStampDatas }: Overlay): JSX.Element => {
       setTime(time + 1);
       getStampDatas();
     }
+    stampDatas.map(({ stamp_id }) => {
+      if (stamp_id == 1) {
+        setStamp1(stamp1 + 1);
+      } else if (stamp_id == 2) {
+        setStamp2(stamp2 + 1);
+      } else if (stamp_id == 3) {
+        setStamp3(stamp3 + 1);
+      } else if (stamp_id == 4) {
+        setStamp4(stamp4 + 1);
+      } else if (stamp_id == 5) {
+        setStamp5(stamp5 + 1);
+      } else {
+        setStamp6(stamp6 + 1);
+      }
+    });
   }, interval);
+
+  const data = {
+    labels: ["👏", "😡", "💕", "🎶", "😱", "🥺"],
+    datasets: [
+      {
+        data: [stamp1, stamp2, stamp3, stamp4, stamp5, stamp6],
+        backgroundColor: [
+          "#feca57",
+          "#ff6b6b",
+          "#ff9ff3",
+          "#00d2d3",
+          "#5f27cd",
+          "#54a0ff",
+        ],
+      },
+    ],
+  };
+
+  const chart_options = {
+    maintainAspectRatio: false,
+    responsive: false,
+    legend: {
+      display: false,
+    },
+    pieceLabel: {
+      render: "label",
+      fontSize: 25,
+    },
+    animation: {
+      duration: 0,
+    },
+  };
 
   const handleChange = (e: any) => {
     setTime(Number(e.target.value));
