@@ -71,10 +71,12 @@ func (s *Server) Route() *mux.Router {
 	r.Methods(http.MethodGet).Path("/api/room/{room_id}/feeling").Queries("ellapsed_time", "{[0-9]+?}").Handler(AppHandler{stamp_controller.FindStamps})
 	
 	audienceController := controller.NewAudience(s.db)
-	r.Methods(http.MethodGet).Path("/api/room/{room_id}/audience").Queries("ellapsed_time", "{[0-9]+?}").Handler(AppHandler{audienceController.FindAudience})
+	r.Methods(http.MethodGet).Path("/api/room/{room_id:[0-9]+}/audience").Queries("ellapsed_time", "{[0-9]+?}").Handler(AppHandler{audienceController.FindAudience})
+
+	r.Methods(http.MethodPost).Path("/api/room/{room_id:[0-9]+}/audience").Handler(AppHandler{audienceController.UpdateAudience})
 
 	info_controller := controller.NewRoomInfo(s.db)
-  r.Methods(http.MethodGet).Path("/api/room/{room_id}").Handler(AppHandler{info_controller.ShowRoomInfo})
+    r.Methods(http.MethodGet).Path("/api/room/{room_id}").Handler(AppHandler{info_controller.ShowRoomInfo})
 	return r
 
 }
