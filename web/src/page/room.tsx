@@ -11,6 +11,7 @@ const Room = (): JSX.Element => {
 
   const [isShowOverlay, setIsShowOverlay] = useState(false);
   const [stampDatas, setStampDatas] = useState([] as { stamp_id: number }[]);
+  const [AudienceSize, setAudienceSize] = useState([] as { size: number }[]);
 
   const handleOnMouseEnter = () => {
     setIsShowOverlay(true);
@@ -24,7 +25,7 @@ const Room = (): JSX.Element => {
       <div className={Style.container} onMouseEnter={handleOnMouseEnter}>
         <Canvas stampDatas={stampDatas} />
       </div>
-      <Overlay setStampDatas={setStampDatas} />
+      <Overlay setStampDatas={setStampDatas} setAudienceSize={setAudienceSize} />
     </>
   );
 };
