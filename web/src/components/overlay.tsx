@@ -101,6 +101,8 @@ const chart_options = {
   animation: {
     duration: 0,
   },
+  segmentShowStroke: false,
+  elements: { arc: { borderWidth: 0 } },
 };
 
 interface size {

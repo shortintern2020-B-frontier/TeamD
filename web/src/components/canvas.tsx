@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 
 import IconStadium from "../assets/stadium.png";
-import DummyPeople from "../assets/37038.jpg";
+import DummyPeople from "../assets/22432.jpg";
 import Avatar2 from "../assets/IMG_7938.png";
 import Avatar3 from "../assets/IMG_7940.png";
 import Avatar4 from "../assets/IMG_7947.png";
