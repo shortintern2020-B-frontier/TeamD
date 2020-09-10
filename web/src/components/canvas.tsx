@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
-import DummyPeople from "../assets/22432.jpg";
+import BackgroundSuccer from "../assets/22432-min.jpg";
+import BackgroundBaseball from "../assets/AdobeStock_119546055-min.jpeg";
 import Avatar2 from "../assets/IMG_7938.png";
 import Avatar3 from "../assets/IMG_7940.png";
 import Avatar4 from "../assets/IMG_7947.png";
@@ -188,6 +190,7 @@ const Canvas = ({ stampDatas, AudienceSize }: Canvas) => {
   const canvasStampRef = useRef<HTMLCanvasElement>(null);
   const [windowSize, setWindowSize] = useState({} as size);
   const [canvasDrawing, setCanvasDrawing] = useState<CanvasDrawing>();
+  const { id } = useParams();
 
   const stageHeight = 400;
 
@@ -247,7 +250,7 @@ const Canvas = ({ stampDatas, AudienceSize }: Canvas) => {
           transform: "perspective(.6em) rotateX(0.1deg) scaleY(1.2)",
           transformOrigin: "left right",
         }}
-        src={DummyPeople}
+        src={Number(id) === 1 ? BackgroundSuccer : BackgroundBaseball}
         alt=""
       />
       <canvas
