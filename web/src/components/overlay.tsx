@@ -295,7 +295,6 @@ const Overlay = ({
     );
   };
 
-  const interval = 50;
   // written by Akari Ushiyama,Koichiro Ueki
   const [stampId, setStampId] = useState(Array(6).fill(1));
   const [stampHistory, setStampHistory] = useState(
@@ -303,7 +302,7 @@ const Overlay = ({
   );
 
   const interval = 500;
-    
+
   useInterval(() => {
     mtime += interval;
     if (mtime / 1000 - time >= 1) {
