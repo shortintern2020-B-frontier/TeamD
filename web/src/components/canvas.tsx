@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import BackgroundSuccer from "../assets/22432-min.jpg";
+import BackgroundFootball from "../assets/22432-min.jpg";
 import BackgroundBaseball from "../assets/AdobeStock_119546055-min.jpeg";
+import BackgroundHall from "../assets/1141061_m-min.jpg";
 import Avatar2 from "../assets/IMG_7938.png";
 import Avatar3 from "../assets/IMG_7940.png";
 import Avatar4 from "../assets/IMG_7947.png";
@@ -244,6 +245,13 @@ const Canvas = ({ stampDatas, AudienceSize }: Canvas) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const imgSrcForDemo =
+    Number(id) === 1
+      ? BackgroundFootball
+      : Number(id) === 2
+      ? BackgroundBaseball
+      : BackgroundHall;
+
   return (
     <>
       <img
@@ -258,7 +266,7 @@ const Canvas = ({ stampDatas, AudienceSize }: Canvas) => {
           transform: "perspective(.6em) rotateX(0.1deg) scaleY(1.2)",
           transformOrigin: "left right",
         }}
-        src={Number(id) === 1 ? BackgroundSuccer : BackgroundBaseball}
+        src={imgSrcForDemo}
         alt=""
       />
       <canvas
