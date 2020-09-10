@@ -10,6 +10,11 @@
 .bottoms {
   position: fixed;
   bottom: 0;
+  opacity: 0.3;
+}
+
+.bottoms:hover {
+  opacity: 0.8;
 }
 
 .image {
