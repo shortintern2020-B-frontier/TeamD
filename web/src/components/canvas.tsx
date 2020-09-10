@@ -35,7 +35,7 @@ class CanvasDrawing {
   private stampContext: CanvasRenderingContext2D;
   private vram: { avatar: number; filled: boolean; x: number; y: number }[][];
   private stageHeight: number;
-  private cell = { width: 140, height: 160 };
+  private cell = { width: 180, height: 160 };
   private stamps: Stamps[];
 
   constructor(
@@ -95,15 +95,6 @@ class CanvasDrawing {
     this.vram.forEach((horizontalCells, y) => {
       horizontalCells.forEach((cell, x) => {
         if (!cell.filled) return;
-        const randomValues = { max: 50, min: 0 };
-        const randomLeft = Math.floor(
-          Math.random() * (randomValues.max - randomValues.min) +
-            randomValues.min
-        );
-        const randomTop = Math.floor(
-          Math.random() * (randomValues.max - randomValues.min) +
-            randomValues.min
-        );
 
         const left = window.innerWidth - this.cell.width * (x + 1);
         const top = window.innerHeight - this.cell.height * y - 300;
@@ -140,7 +131,6 @@ class CanvasDrawing {
       .flat()
       .filter(Boolean);
 
-    console.table(this.vram);
     return emptyCells[0];
   };
 
@@ -195,9 +185,10 @@ class CanvasDrawing {
 
 interface Canvas {
   stampDatas: { stamp_id: number }[];
+  AudienceSize: number;
 }
 
-const Canvas = ({ stampDatas }: Canvas) => {
+const Canvas = ({ stampDatas, AudienceSize }: Canvas) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvasStampRef = useRef<HTMLCanvasElement>(null);
   const [windowSize, setWindowSize] = useState({} as size);
@@ -209,6 +200,8 @@ const Canvas = ({ stampDatas }: Canvas) => {
     stampDatas.forEach(({ stamp_id }) => {
       canvasDrawing.setStamp(stamp_id);
     });
+
+  console.log(AudienceSize);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -228,7 +221,9 @@ const Canvas = ({ stampDatas }: Canvas) => {
 
     if (!canvasDrawing) return;
 
-    for (let i = 0; i < 23; i++) {
+    const repeatAddPeople = AudienceSize === 0 ? 5 : AudienceSize;
+
+    for (let i = 0; i < repeatAddPeople; i++) {
       canvasDrawing.addPeople();
     }
   }, [windowSize]);

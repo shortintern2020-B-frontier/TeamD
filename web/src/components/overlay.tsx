@@ -180,6 +180,36 @@ class CanvasDrawing {
   };
 }
 
+const post = async <T extends unknown>(data: T, url: string) => {
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("Accept", "application/json");
+  headers.append("Access-Control-Allow-Origin", "http://localhost:1996");
+  const options: RequestInit = {
+    headers: headers,
+    method: "POST",
+    body: JSON.stringify(data),
+    mode: "cors",
+  };
+
+  await fetch(url, options);
+};
+
+const get = async (url: string) => {
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("Accept", "application/json");
+  headers.append("Access-Control-Allow-Origin", "http://localhost:1996");
+  const options: RequestInit = {
+    headers: headers,
+    method: "GET",
+    mode: "cors",
+  };
+
+  const res = await fetch(url, options);
+  return res;
+};
+
 interface Overlay {
   setStampDatas: (arg1: { stamp_id: number }[]) => void;
   setAudienceSize: (arg1: number) => void;
@@ -218,48 +248,12 @@ const Overlay = ({ setStampDatas, setAudienceSize }: Overlay): JSX.Element => {
   };
 
   const postStampData = async (data: Stamp) => {
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("Accept", "application/json");
-    headers.append("Access-Control-Allow-Origin", "http://localhost:1996");
-    /* headers.append("Access-Control-Allow-Credentials", "true");
-    headers.append(
-      "Access-Control-Allow-Headers",
-      "X-Requested-With, Content-Type, Authorization, Origin, Accept"
-    ); */
-
-    const options: RequestInit = {
-      headers: headers,
-      method: "POST",
-      body: JSON.stringify(data),
-      mode: "cors",
-    };
-
-    /* const res = await fetch(
-      `http://localhost:1996/api/room/${id}/feeling`,
-      options
-    ); */
+    post(data, `http://localhost:1996/api/room/${id}/feeling`);
   };
 
   const getStampDatas = async () => {
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("Accept", "application/json");
-    headers.append("Access-Control-Allow-Origin", "http://localhost:1996");
-    /* headers.append("Access-Control-Allow-Credentials", "true");
-    headers.append(
-      "Access-Control-Allow-Headers",
-      "X-Requested-With, Content-Type, Authorization, Origin, Accept"
-    ); */
-
-    const options: RequestInit = {
-      headers: headers,
-      method: "GET",
-      mode: "cors",
-    };
-    const res = await fetch(
-      `http://localhost:1996/api/room/${id}/feeling?ellapsed_time=${time}`,
-      options
+    const res = await get(
+      `http://localhost:1996/api/room/${id}/feeling?ellapsed_time=${time}`
     );
 
     if (res.status === 200) {
@@ -271,24 +265,8 @@ const Overlay = ({ setStampDatas, setAudienceSize }: Overlay): JSX.Element => {
   };
 
   const getAudienceSize = async () => {
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("Accept", "application/json");
-    headers.append("Access-Control-Allow-Origin", "http://localhost:1996");
-    /* headers.append("Access-Control-Allow-Credentials", "true");
-    headers.append(
-      "Access-Control-Allow-Headers",
-      "X-Requested-With, Content-Type, Authorization, Origin, Accept"
-    ); */
-    const options: RequestInit = {
-      headers: headers,
-      method: "GET",
-      mode: "no-cors",
-    };
-
-    const res = await fetch(
-      `http://localhost:1996/api/room/${id}/audience?ellapsed_time=${mtime}`,
-      options
+    const res = await get(
+      `http://localhost:1996/api/room/${id}/audience?ellapsed_time=${mtime}`
     );
 
     if (res.status === 200) {
@@ -297,6 +275,13 @@ const Overlay = ({ setStampDatas, setAudienceSize }: Overlay): JSX.Element => {
     } else {
       setAudienceSize(0);
     }
+  };
+
+  const postExistAudience = async () => {
+    post(
+      { ellapsed_time: mtime },
+      `http://localhost:1996/api/room/${id}/audience`
+    );
   };
 
   const interval = 50;
@@ -308,6 +293,7 @@ const Overlay = ({ setStampDatas, setAudienceSize }: Overlay): JSX.Element => {
     }
     if (mtime % 60000 == 0) {
       getAudienceSize();
+      postExistAudience();
     }
   }, interval);
 
