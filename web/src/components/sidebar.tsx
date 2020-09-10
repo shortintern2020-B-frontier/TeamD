@@ -15,14 +15,9 @@ const Sidebar = () => {
           <a href="#">
             <FiSettings />
           </a>
-          <a href="#" className={Style.exitIcon}>
-            <FiLogOut />
-          </a>
           <Link to={"/author"}>
             <FiBook />
           </Link>
-          <br />
-          <br />
           <a href="#" className={Style.exitIcon}>
             <FiLogOut />
           </a>

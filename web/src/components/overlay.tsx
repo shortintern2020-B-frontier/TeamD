@@ -1,6 +1,6 @@
 import { Pie } from "react-chartjs-2";
 import React, { useState, useRef, useEffect } from "react";
-import { useParams, Link, useHistory } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import "chart.piecelabel.js";
 import axios from "axios";
 
@@ -60,46 +60,6 @@ const stamps = [
     text: "🥺",
   },
 ];
-
-const data = {
-  labels: ["👏", "😡", "💕", "🎶", "😱", "🥺"],
-  datasets: [
-    {
-      data: [30, 25, 20, 15, 10, 90],
-      backgroundColor: [
-        "#feca57",
-        "#ff6b6b",
-        "#ff9ff3",
-        "#00d2d3",
-        "#5f27cd",
-        "#54a0ff",
-      ],
-    },
-  ],
-};
-
-const chart_options = {
-  maintainAspectRatio: false,
-  responsive: false,
-  legend: {
-    display: false,
-  },
-  pieceLabel: {
-    render: "label",
-    fontSize: 25,
-  },
-  animation: {
-    duration: 0,
-  },
-  segmentShowStroke: false,
-  elements: { arc: { borderWidth: 0 } },
-};
-
-interface size {
-  width: number;
-  height: number;
-}
-
 interface Stamps {
   x: number;
   y: number;
@@ -213,7 +173,6 @@ const Overlay = ({
   setStampDatas,
   setAudienceSize,
 }: Overlay): JSX.Element => {
-  const [stamp, setStamp] = useState({} as Stamp);
   const [time, setTime] = useState(0);
   const [endtime, setEndtime] = useState<number>(0);
   const [canvasDrawing, setCanvasDrawing] = useState<CanvasDrawing>();
@@ -232,6 +191,7 @@ const Overlay = ({
   useEffect(() => {
     mtime = 0;
     getEndTime();
+    // eslint-disable-next-line
   }, []);
 
   const handleOnClickBackHome = () => {
@@ -309,7 +269,7 @@ const Overlay = ({
       setTime(time + 1);
       getStampDatas();
 
-      if (stampDatas.length == 0) {
+      if (stampDatas.length === 0) {
         return;
       }
 
@@ -319,7 +279,7 @@ const Overlay = ({
       }
       setStampHistory(arr);
 
-      if (stampHistory.length == 0) {
+      if (stampHistory.length === 0) {
         return;
       }
 
@@ -334,7 +294,7 @@ const Overlay = ({
         }, Array(6).fill(0))
       );
     }
-    if (mtime % 60000 == 0) {
+    if (mtime % 60000 === 0) {
       getAudienceSize();
       postExistAudience();
     }
