@@ -228,74 +228,33 @@ const Overlay = ({ stampDatas, setStampDatas }: Overlay): JSX.Element => {
     }
   };
 
-  // const [stampId] = useState(Array(6).fill(1));
-  // var flag = 0;
-  // const interval = 50;
-  // useInterval(() => {
-  //   mtime += interval;
-  //   if (mtime / 1000 - time >= 1) {
-  //     setTime(time + 1);
-  //     getStampDatas();
-  //   }
-  //   stampDatas.map(({ stamp_id }) => {
-  //     if (flag == 0) {
-  //       stampId.fill(0);
-  //       flag = 1;
-  //     }
-  //     if (0 < stamp_id && stamp_id < 7) {
-  //       stampId[stamp_id - 1] += 1;
-  //     }
-  //   });
-  // }, interval);
-
-  // const data = {
-  //   labels: ["👏", "😡", "💕", "🎶", "😱", "🥺"],
-  //   datasets: [
-  //     {
-  //       data: [
-  //         stampId[0],
-  //         stampId[1],
-  //         stampId[2],
-  //         stampId[3],
-  //         stampId[4],
-  //         stampId[5],
-  //       ],
-  //       backgroundColor: [
-  //         "#feca57",
-  //         "#ff6b6b",
-  //         "#ff9ff3",
-  //         "#00d2d3",
-  //         "#5f27cd",
-  //         "#54a0ff",
-  //       ],
-  //     },
-  //   ],
-  // };
-
-  const [stampCount] = useState(Array(10));
+  // written by Akari Ushiyama
   const [stampId] = useState(Array(6).fill(1));
-
-  var flag1 = 0;
-  var flag2 = 0;
+  const [stampCount] = useState(Array(10));
+  // useStateって，普通なら関数が終了すると変数は消えちゃうところを，保持できるよってことだと思ってる
+  // mapが使えなかった
+  // const [stampCount] = Array(10);
+  var flag1 = Boolean(false);
+  var flag2 = Boolean(false);
   const interval = 50;
   useInterval(() => {
     mtime += interval;
     if (mtime / 1000 - time >= 1) {
       setTime(time + 1);
       getStampDatas();
-      stampDatas.map(({ stamp_id }) => {
-        if (flag1 == 0) {
+      stampDatas.forEach(() => {
+        if (!flag1) {
           stampCount.fill(0);
-          flag1 = 1;
+          flag1 = true;
         }
         stampCount.push(stampDatas);
       });
     }
     stampCount.map(() => {
       stampDatas.map(({ stamp_id }) => {
-        if (flag2 == 0) {
+        if (!flag2) {
           stampId.fill(0);
-          flag2 = 1;
+          flag2 = true;
         }
         if (0 < stamp_id && stamp_id < 7) {
           stampId[stamp_id - 1] += 1;
@@ -331,6 +290,11 @@ const Overlay = ({ stampDatas, setStampDatas }: Overlay): JSX.Element => {
   const chart_options = {
     maintainAspectRatio: false,
     responsive: false,
+    elements: {
+      arc: {
+        borderWidth: 0,
+      },
+    },
     legend: {
       display: false,
     },
