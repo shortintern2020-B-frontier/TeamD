@@ -35,7 +35,7 @@ class CanvasDrawing {
   private stampContext: CanvasRenderingContext2D;
   private vram: { avatar: number; filled: boolean; x: number; y: number }[][];
   private stageHeight: number;
-  private cell = { width: 180, height: 160 };
+  private cell = { width: 120, height: 160 };
   private stamps: Stamps[];
 
   constructor(
@@ -96,11 +96,10 @@ class CanvasDrawing {
 
         const left = window.innerWidth - this.cell.width * (x + 1);
         const top = window.innerHeight - this.cell.height * y - 300;
-
         const chara = new Image();
         chara.src = this.randomlyGetValuesFromArray(avatars);
         chara.onload = () => {
-          context.drawImage(chara, left, top, 200, 300);
+          context.drawImage(chara, left, top, 220, 300);
         };
       });
     });
