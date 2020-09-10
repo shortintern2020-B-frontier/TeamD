@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 
-import IconStadium from "../assets/stadium.png";
 import DummyPeople from "../assets/22432.jpg";
 import Avatar2 from "../assets/IMG_7938.png";
 import Avatar3 from "../assets/IMG_7940.png";
@@ -249,6 +248,7 @@ const Canvas = ({ stampDatas, AudienceSize }: Canvas) => {
           transformOrigin: "left right",
         }}
         src={DummyPeople}
+        alt=""
       />
       <canvas
         ref={canvasRef}

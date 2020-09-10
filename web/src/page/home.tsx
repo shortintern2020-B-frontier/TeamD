@@ -1,48 +1,44 @@
-
-import React,{useState,useEffect} from "react";
-import axios from "axios"
-import styles from "../css/home.module.css"
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import styles from "../css/home.module.css";
 import home from "../css/home.module.css";
-import RoomThumnail from "../components/thumnail"
+import RoomThumnail from "../components/thumnail";
 import Sidebar from "../components/sidebar";
 import Logo from "../components/header";
-import { useGlobalState } from "../"
+import { useGlobalState } from "../";
 
-interface Room{
-  room_id:number;
+interface Room {
+  room_id: number;
   title: string;
-  image_url:string;
+  image_url: string;
 }
 
 const HomePage = () => {
   const [rooms, setRooms] = useState<Room[]>();
-  const [firstRender, setFirstRender] = useGlobalState("firstRender")
+  const [firstRender, setFirstRender] = useGlobalState("firstRender");
 
-  const fetch_url="http://localhost:1996/api/room";
+  const fetch_url = "http://localhost:1996/api/room";
 
-  const fetchRooms = async () =>{
-    const result =await axios.get(fetch_url);
-    if (result.status === 200){
-        setRooms(result.data);
+  const fetchRooms = async () => {
+    const result = await axios.get(fetch_url);
+    if (result.status === 200) {
+      setRooms(result.data);
+    } else {
+      console.log("Err=>", result);
     }
-    else{
-        console.log("Err=>",result);
-    };
   };
 
   const toggleFirstRender = () => {
     setTimeout(() => {
       setFirstRender(false);
     }, 2600);
-  }
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchRooms();
     toggleFirstRender();
-  },[]);
-
-  
-
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div>
@@ -51,17 +47,17 @@ const HomePage = () => {
       </div>
       <div className={styles.container}>
         <div className={styles.above}>
-          <Sidebar  />
+          <Sidebar />
         </div>
         <div className={styles.thumnailGrid}>
-          {rooms && rooms.map(item=>(
-            <RoomThumnail room={item} key={item.room_id}/>
-          ))}
+          {rooms &&
+            rooms.map((item) => (
+              <RoomThumnail room={item} key={item.room_id} />
+            ))}
         </div>
       </div>
-      { firstRender && <div className={home.shutter} />}
+      {firstRender && <div className={home.shutter} />}
     </div>
-
   );
 };
 
