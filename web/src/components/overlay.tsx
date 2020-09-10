@@ -228,53 +228,50 @@ const Overlay = ({ stampDatas, setStampDatas }: Overlay): JSX.Element => {
     }
   };
 
-  // written by Akari Ushiyama
-  const [stampId] = useState(Array(6).fill(1));
-  const [stampCount] = useState(Array(10));
-  // useStateって，普通なら関数が終了すると変数は消えちゃうところを，保持できるよってことだと思ってる
-  // mapが使えなかった
-  // const [stampCount] = Array(10);
-  var flag1 = Boolean(false);
-  var flag2 = Boolean(false);
-  const interval = 50;
+  // written by Akari Ushiyama,Koichiro Ueki
+  const [stampId, setStampId] = useState(Array(6).fill(1));
+  const [stampHistory, setStampHistory] = useState(
+    [] as { stamp_id: number }[][]
+  );
+  const interval = 500;
   useInterval(() => {
     mtime += interval;
     if (mtime / 1000 - time >= 1) {
       setTime(time + 1);
       getStampDatas();
-      stampDatas.forEach(() => {
-        if (!flag1) {
-          stampCount.fill(0);
-          flag1 = true;
-        }
-        stampCount.push(stampDatas);
-      });
+
+      if (stampDatas.length == 0) {
+        return;
+      }
+
+      const arr = [...stampHistory, stampDatas];
+      if (arr.length > 10) {
+        arr.shift();
+      }
+      setStampHistory(arr);
+
+      if (stampHistory.length == 0) {
+        return;
+      }
+
+      setStampId(
+        stampHistory.reduce((acc, stampData: { stamp_id: number }[]) => {
+          stampData.forEach(({ stamp_id }) => {
+            if (0 < stamp_id && stamp_id < 7) {
+              acc[stamp_id - 1] += 1;
+            }
+          });
+          return acc;
+        }, Array(6).fill(0))
+      );
     }
-    stampCount.map(() => {
-      stampDatas.map(({ stamp_id }) => {
-        if (!flag2) {
-          stampId.fill(0);
-          flag2 = true;
-        }
-        if (0 < stamp_id && stamp_id < 7) {
-          stampId[stamp_id - 1] += 1;
-        }
-      });
-    });
   }, interval);
 
   const data = {
     labels: ["👏", "😡", "💕", "🎶", "😱", "🥺"],
     datasets: [
       {
-        data: [
-          stampId[0],
-          stampId[1],
-          stampId[2],
-          stampId[3],
-          stampId[4],
-          stampId[5],
-        ],
+        data: stampId,
         backgroundColor: [
           "#feca57",
           "#ff6b6b",
