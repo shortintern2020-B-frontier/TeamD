@@ -8,10 +8,10 @@ BEGIN
   DECLARE end_time INT DEFAULT 0;
   DECLARE cursor_end_time CURSOR FOR
     SELECT roomA.end_time FROM room AS roomA WHERE id = room_id;
-  OPEN cursor_end_times;
-  FETCH cursor_end_times INTO end_time;
-  CLOSE cursor_end_times;
-  
+  OPEN cursor_end_time;
+  FETCH cursor_end_time INTO end_time;
+  CLOSE cursor_end_time;
+
   WHILE target_ellapsed_time <= end_time DO
     INSERT audience (room_id, ellapsed_time, count) VALUES(room_id, target_ellapsed_time, 0);
     set target_ellapsed_time = target_ellapsed_time + 60000;
