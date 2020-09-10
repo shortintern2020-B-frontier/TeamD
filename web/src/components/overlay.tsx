@@ -61,6 +61,40 @@ const stamps = [
   },
 ];
 
+const data = {
+  labels: ["👏", "😡", "💕", "🎶", "😱", "🥺"],
+  datasets: [
+    {
+      data: [30, 25, 20, 15, 10, 90],
+      backgroundColor: [
+        "#feca57",
+        "#ff6b6b",
+        "#ff9ff3",
+        "#00d2d3",
+        "#5f27cd",
+        "#54a0ff",
+      ],
+    },
+  ],
+};
+
+const chart_options = {
+  maintainAspectRatio: false,
+  responsive: false,
+  legend: {
+    display: false,
+  },
+  pieceLabel: {
+    render: "label",
+    fontSize: 25,
+  },
+  animation: {
+    duration: 0,
+  },
+  segmentShowStroke: false,
+  elements: { arc: { borderWidth: 0 } },
+};
+
 interface size {
   width: number;
   height: number;
@@ -138,6 +172,36 @@ class CanvasDrawing {
   };
 }
 
+const post = async <T extends unknown>(data: T, url: string) => {
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("Accept", "application/json");
+  headers.append("Access-Control-Allow-Origin", "http://localhost:1996");
+  const options: RequestInit = {
+    headers: headers,
+    method: "POST",
+    body: JSON.stringify(data),
+    mode: "cors",
+  };
+
+  await fetch(url, options);
+};
+
+const get = async (url: string) => {
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("Accept", "application/json");
+  headers.append("Access-Control-Allow-Origin", "http://localhost:1996");
+  const options: RequestInit = {
+    headers: headers,
+    method: "GET",
+    mode: "cors",
+  };
+
+  const res = await fetch(url, options);
+  return res;
+};
+
 interface Overlay {
   stampDatas: { stamp_id: number }[];
   setStampDatas: (arg1: { stamp_id: number }[]) => void;
@@ -183,43 +247,12 @@ const Overlay = ({
   };
 
   const postStampData = async (data: Stamp) => {
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("Accept", "application/json");
-    headers.append("Access-Control-Allow-Origin", "http://localhost:1996");
-
-    const options: RequestInit = {
-      headers: headers,
-      method: "POST",
-      body: JSON.stringify(data),
-      mode: "cors",
-    };
-
-    /* const res = await fetch(
-      `http://localhost:1996/api/room/${id}/feeling`,
-      options
-    ); */
+    post(data, `http://localhost:1996/api/room/${id}/feeling`);
   };
 
   const getStampDatas = async () => {
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("Accept", "application/json");
-    headers.append("Access-Control-Allow-Origin", "http://localhost:1996");
-    /* headers.append("Access-Control-Allow-Credentials", "true");
-    headers.append(
-      "Access-Control-Allow-Headers",
-      "X-Requested-With, Content-Type, Authorization, Origin, Accept"
-    ); */
-
-    const options: RequestInit = {
-      headers: headers,
-      method: "GET",
-      mode: "cors",
-    };
-    const res = await fetch(
-      `http://localhost:1996/api/room/${id}/feeling?ellapsed_time=${time}`,
-      options
+    const res = await get(
+      `http://localhost:1996/api/room/${id}/feeling?ellapsed_time=${time}`
     );
 
     if (res.status === 200) {
@@ -243,24 +276,8 @@ const Overlay = ({
   };
 
   const getAudienceSize = async () => {
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("Accept", "application/json");
-    headers.append("Access-Control-Allow-Origin", "http://localhost:1996");
-    /* headers.append("Access-Control-Allow-Credentials", "true");
-    headers.append(
-      "Access-Control-Allow-Headers",
-      "X-Requested-With, Content-Type, Authorization, Origin, Accept"
-    ); */
-    const options: RequestInit = {
-      headers: headers,
-      method: "GET",
-      mode: "no-cors",
-    };
-
-    const res = await fetch(
-      `http://localhost:1996/api/room/${id}/audience?ellapsed_time=${mtime}`,
-      options
+    const res = await get(
+      `http://localhost:1996/api/room/${id}/audience?ellapsed_time=${mtime}`
     );
 
     if (res.status === 200) {
@@ -271,6 +288,14 @@ const Overlay = ({
     }
   };
 
+  const postExistAudience = async () => {
+    post(
+      { ellapsed_time: mtime },
+      `http://localhost:1996/api/room/${id}/audience`
+    );
+  };
+
+  const interval = 50;
   // written by Akari Ushiyama,Koichiro Ueki
   const [stampId, setStampId] = useState(Array(6).fill(1));
   const [stampHistory, setStampHistory] = useState(
@@ -278,6 +303,7 @@ const Overlay = ({
   );
 
   const interval = 500;
+    
   useInterval(() => {
     mtime += interval;
     if (mtime / 1000 - time >= 1) {
@@ -311,6 +337,7 @@ const Overlay = ({
     }
     if (mtime % 60000 == 0) {
       getAudienceSize();
+      postExistAudience();
     }
   }, interval);
 

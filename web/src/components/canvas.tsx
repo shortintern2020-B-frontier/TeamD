@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 
 import IconStadium from "../assets/stadium.png";
-import DummyPeople from "../assets/37038.jpg";
+import DummyPeople from "../assets/22432.jpg";
 import Avatar2 from "../assets/IMG_7938.png";
 import Avatar3 from "../assets/IMG_7940.png";
 import Avatar4 from "../assets/IMG_7947.png";
@@ -35,7 +35,7 @@ class CanvasDrawing {
   private stampContext: CanvasRenderingContext2D;
   private vram: { avatar: number; filled: boolean; x: number; y: number }[][];
   private stageHeight: number;
-  private cell = { width: 140, height: 160 };
+  private cell = { width: 120, height: 160 };
   private stamps: Stamps[];
 
   constructor(
@@ -48,16 +48,13 @@ class CanvasDrawing {
     this.context = context;
     this.stampContext = stampContext;
     this.stamps = [] as Stamps[];
-    // this.drawStage();
     this.showStampFromPeople();
   }
 
   addPeople = (): void => {
     const targetPosition = this.searchEmptyCell();
-    console.log(targetPosition);
     if (!targetPosition) return;
     const { x, y } = targetPosition;
-    console.log(targetPosition);
     const newVram = this.vram.map((horizontalCells, i) =>
       horizontalCells.map((cell, l) => {
         if (cell.filled) return { ...cell, filled: true };
@@ -65,6 +62,7 @@ class CanvasDrawing {
         return { ...cell, filled: false };
       })
     );
+
     this.vram = newVram;
 
     this.drawPeople();
@@ -95,23 +93,13 @@ class CanvasDrawing {
     this.vram.forEach((horizontalCells, y) => {
       horizontalCells.forEach((cell, x) => {
         if (!cell.filled) return;
-        const randomValues = { max: 50, min: 0 };
-        const randomLeft = Math.floor(
-          Math.random() * (randomValues.max - randomValues.min) +
-            randomValues.min
-        );
-        const randomTop = Math.floor(
-          Math.random() * (randomValues.max - randomValues.min) +
-            randomValues.min
-        );
 
         const left = window.innerWidth - this.cell.width * (x + 1);
         const top = window.innerHeight - this.cell.height * y - 300;
-
         const chara = new Image();
         chara.src = this.randomlyGetValuesFromArray(avatars);
         chara.onload = () => {
-          context.drawImage(chara, left, top, 200, 300);
+          context.drawImage(chara, left, top, 220, 300);
         };
       });
     });
@@ -140,7 +128,6 @@ class CanvasDrawing {
       .flat()
       .filter(Boolean);
 
-    console.table(this.vram);
     return emptyCells[0];
   };
 
@@ -187,17 +174,17 @@ class CanvasDrawing {
     const text = stamps.filter(({ stamp_id }) => stamp_id === id)[0]?.text;
     const { x, y } = targetPosition;
     const left = window.innerWidth - this.cell.width * x;
-    console.log(left);
-    const top = window.innerHeight - this.cell.height * y;
+    const top = window.innerHeight - this.cell.height * (y + 1);
     this.stamps.push({ x: left, y: top, text, opacity: 1 });
   };
 }
 
 interface Canvas {
   stampDatas: { stamp_id: number }[];
+  AudienceSize: number;
 }
 
-const Canvas = ({ stampDatas }: Canvas) => {
+const Canvas = ({ stampDatas, AudienceSize }: Canvas) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvasStampRef = useRef<HTMLCanvasElement>(null);
   const [windowSize, setWindowSize] = useState({} as size);
@@ -224,14 +211,14 @@ const Canvas = ({ stampDatas }: Canvas) => {
       contextStamp,
       stageHeight
     );
-    setCanvasDrawing(newCanvasDrawing);
 
-    if (!canvasDrawing) return;
+    const repeatAddPeople = AudienceSize === 0 ? 5 : AudienceSize;
 
-    for (let i = 0; i < 23; i++) {
-      canvasDrawing.addPeople();
+    for (let i = 0; i < repeatAddPeople; i++) {
+      newCanvasDrawing.addPeople();
     }
-  }, [windowSize]);
+    setCanvasDrawing(newCanvasDrawing);
+  }, [windowSize, AudienceSize]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -246,17 +233,6 @@ const Canvas = ({ stampDatas }: Canvas) => {
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  const handleOnClickCanvas = (
-    e: React.MouseEvent<HTMLCanvasElement, MouseEvent>
-  ) => {
-    if (!canvasDrawing) return;
-    const randomValues = { max: stamps.length, min: 1 };
-    const ramdomId = Math.floor(
-      Math.random() * (randomValues.max - randomValues.min) + randomValues.min
-    );
-    canvasDrawing.setStamp(ramdomId);
-  };
 
   return (
     <>
@@ -274,19 +250,6 @@ const Canvas = ({ stampDatas }: Canvas) => {
         }}
         src={DummyPeople}
       />
-      {/* <img
-        src={IconStadium}
-        alt=""
-        style={{
-          width: "100vw",
-          height: "90vh",
-          transform: "perspective(.6em) rotateX(0.75deg)",
-          transformOrigin: "left right",
-          position: "fixed",
-          top: 0,
-          left: 0,
-        }}
-      /> */}
       <canvas
         ref={canvasRef}
         width={window.innerWidth}
@@ -307,7 +270,6 @@ const Canvas = ({ stampDatas }: Canvas) => {
           height: "calc(100vh - 80px)",
           width: "100%",
         }}
-        onClick={handleOnClickCanvas}
       />
     </>
   );
