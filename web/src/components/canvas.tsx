@@ -201,8 +201,6 @@ const Canvas = ({ stampDatas, AudienceSize }: Canvas) => {
       canvasDrawing.setStamp(stamp_id);
     });
 
-  console.log(AudienceSize);
-
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas?.getContext("2d");
@@ -226,7 +224,7 @@ const Canvas = ({ stampDatas, AudienceSize }: Canvas) => {
     for (let i = 0; i < repeatAddPeople; i++) {
       canvasDrawing.addPeople();
     }
-  }, [windowSize]);
+  }, [windowSize, AudienceSize]);
 
   useEffect(() => {
     const handleResize = () => {
