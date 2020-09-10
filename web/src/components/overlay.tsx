@@ -4,25 +4,24 @@ import { useParams, Link, useHistory } from "react-router-dom";
 import "chart.piecelabel.js";
 
 import Style from "../css/overlay.module.css";
-import useInterval from 'use-interval';
+import useInterval from "use-interval";
 
 interface Stamp {
   stamp_id: number;
   ptime: number;
 }
 
-
 interface Time {
-  hour:number;
-  minute:number;
-  second:number;
+  hour: number;
+  minute: number;
+  second: number;
 }
-const endtime=40000;
+const endtime = 40000;
 let mtime = 0;
 
-const toTwoDigit = (num:number):String=>{
-  return("0"+num).slice(-2);
-}
+const toTwoDigit = (num: number): String => {
+  return ("0" + num).slice(-2);
+};
 
 const secToTime = (secTime: number): Time => {
   const sec = secTime % 60;
@@ -33,77 +32,34 @@ const secToTime = (secTime: number): Time => {
 
   const time = { hour: hour, minute: min, second: sec };
   return time;
-}
+};
 
 const stamps = [
-
   {
     stamp_id: 1,
-    img_url: "https://emojis.wiki/emoji-pics/apple/clapping-hands-apple.png",
     text: "👏",
   },
   {
     stamp_id: 2,
-    img_url:
-      "https://i.pinimg.com/originals/71/ea/47/71ea470cde8de51e87e9c84d0a0bf7f9.png",
     text: "😡",
   },
   {
     stamp_id: 3,
-    img_url:
-      "https://pics.prcm.jp/7fbe179d932a9/83247844/png/83247844_220x220.png",
     text: "💕",
   },
   {
     stamp_id: 4,
-    img_url:
-      "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/114/multiple-musical-notes_1f3b6.png",
     text: "🎶",
   },
   {
     stamp_id: 5,
-    img_url:
-      "https://i.pinimg.com/originals/81/46/85/8146853e8ea68e606571fa8af44ca65c.png",
     text: "😱",
   },
   {
     stamp_id: 6,
-    img_url: "https://www.emojiall.com/images/120/apple/1f97a.png",
     text: "🥺",
   },
 ];
-
-const data = {
-  labels: ["👏", "😡", "💕", "🎶", "😱", "🥺"],
-  datasets: [
-    {
-      data: [30, 25, 20, 15, 10, 90],
-      backgroundColor: [
-        "#feca57",
-        "#ff6b6b",
-        "#ff9ff3",
-        "#00d2d3",
-        "#5f27cd",
-        "#54a0ff",
-      ],
-    },
-  ],
-};
-
-const chart_options = {
-  maintainAspectRatio: false,
-  responsive: false,
-  legend: {
-    display: false,
-  },
-  pieceLabel: {
-    render: "label",
-    fontSize: 25,
-  },
-  animation: {
-    duration: 0,
-  },
-};
 
 interface size {
   width: number;
@@ -182,9 +138,19 @@ class CanvasDrawing {
   };
 }
 
-const Overlay = (): JSX.Element => {
-  const [count, setCount] = useState(0);
+interface Overlay {
+  stampDatas: { stamp_id: number }[];
+  setStampDatas: (arg1: { stamp_id: number }[]) => void;
+  setAudienceSize: (arg1: number) => void;
+}
+
+const Overlay = ({
+  stampDatas,
+  setStampDatas,
+  setAudienceSize,
+}: Overlay): JSX.Element => {
   const [stamp, setStamp] = useState({} as Stamp);
+  const [time, setTime] = useState(0);
   const [canvasDrawing, setCanvasDrawing] = useState<CanvasDrawing>();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { id } = useParams();
@@ -198,29 +164,32 @@ const Overlay = (): JSX.Element => {
     setCanvasDrawing(new CanvasDrawing(context));
   }, []);
 
+  useEffect(() => {
+    mtime = 0;
+  }, []);
 
-  useEffect(()=>{
-    mtime=0;
-  },[]);
-
-  
   const handleOnClickBackHome = () => {
     history.push("/");
-
   };
 
-  const handleOnClickStamp = (id: number) => {
+  const handleOnClickStamp = (stamp_id: number) => {
     if (!canvasDrawing) return;
-    canvasDrawing.setStamp(id);
+    canvasDrawing.setStamp(stamp_id);
 
-    const data = { stamp_id: id, ptime: 12 };
-    setStamp({ stamp_id: id, ptime: 12 });
+    const data = { stamp_id, ptime: time, room_id: Number(id) };
+    postStampData(data);
   };
 
   const postStampData = async (data: Stamp) => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
-
+    headers.append("Accept", "application/json");
+    headers.append("Access-Control-Allow-Origin", "http://localhost:1996");
+    /* headers.append("Access-Control-Allow-Credentials", "true");
+    headers.append(
+      "Access-Control-Allow-Headers",
+      "X-Requested-With, Content-Type, Authorization, Origin, Accept"
+    ); */
     const options: RequestInit = {
       headers: headers,
       method: "POST",
@@ -228,77 +197,211 @@ const Overlay = (): JSX.Element => {
       mode: "cors",
     };
 
-    // const res = await fetch(`http://localhost:1996/${id}/feeling`, options);
+    /* const res = await fetch(
+      `http://localhost:1996/api/room/${id}/feeling`,
+      options
+    ); */
   };
 
-  const [time, setTime] = useState(0);
+  const getStampDatas = async () => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Accept", "application/json");
+    headers.append("Access-Control-Allow-Origin", "http://localhost:1996");
+    /* headers.append("Access-Control-Allow-Credentials", "true");
+    headers.append(
+      "Access-Control-Allow-Headers",
+      "X-Requested-With, Content-Type, Authorization, Origin, Accept"
+    ); */
 
-  const interval=50;
+    const options: RequestInit = {
+      headers: headers,
+      method: "GET",
+      mode: "cors",
+    };
+    const res = await fetch(
+      `http://localhost:1996/api/room/${id}/feeling?ellapsed_time=${time}`,
+      options
+    );
+
+    if (res.status === 200) {
+      const json = await res.json();
+      setStampDatas(json);
+    } else {
+      setStampDatas([] as { stamp_id: number }[]);
+    }
+  };
+
+  const getAudienceSize = async () => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Accept", "application/json");
+    headers.append("Access-Control-Allow-Origin", "http://localhost:1996");
+    /* headers.append("Access-Control-Allow-Credentials", "true");
+    headers.append(
+      "Access-Control-Allow-Headers",
+      "X-Requested-With, Content-Type, Authorization, Origin, Accept"
+    ); */
+    const options: RequestInit = {
+      headers: headers,
+      method: "GET",
+      mode: "no-cors",
+    };
+
+    const res = await fetch(
+      `http://localhost:1996/api/room/${id}/audience?ellapsed_time=${mtime}`,
+      options
+    );
+
+    if (res.status === 200) {
+      const { audience } = await res.json();
+      setAudienceSize(audience);
+    } else {
+      setAudienceSize(0);
+    }
+  };
+
+  // written by Akari Ushiyama,Koichiro Ueki
+  const [stampId, setStampId] = useState(Array(6).fill(1));
+  const [stampHistory, setStampHistory] = useState(
+    [] as { stamp_id: number }[][]
+  );
+  const interval = 500;
   useInterval(() => {
     mtime += interval;
-    if(mtime/1000 - time >= 1){
-      setTime(time+1);
-    } 
+    if (mtime / 1000 - time >= 1) {
+      setTime(time + 1);
+      getStampDatas();
+
+      if (stampDatas.length == 0) {
+        return;
+      }
+
+      const arr = [...stampHistory, stampDatas];
+      if (arr.length > 10) {
+        arr.shift();
+      }
+      setStampHistory(arr);
+
+      if (stampHistory.length == 0) {
+        return;
+      }
+
+      setStampId(
+        stampHistory.reduce((acc, stampData: { stamp_id: number }[]) => {
+          stampData.forEach(({ stamp_id }) => {
+            if (0 < stamp_id && stamp_id < 7) {
+              acc[stamp_id - 1] += 1;
+            }
+          });
+          return acc;
+        }, Array(6).fill(0))
+      );
+    }
+    if (mtime % 60000 == 0) {
+      getAudienceSize();
+    }
   }, interval);
 
-  const handleChange = (e:any) => {
-    setTime(Number(e.target.value));
-    mtime = Number(e.target.value)*1000;
-  }
+  const data = {
+    labels: ["👏", "😡", "💕", "🎶", "😱", "🥺"],
+    datasets: [
+      {
+        data: stampId,
+        backgroundColor: [
+          "#feca57",
+          "#ff6b6b",
+          "#ff9ff3",
+          "#00d2d3",
+          "#5f27cd",
+          "#54a0ff",
+        ],
+      },
+    ],
+  };
 
-  const curTime= secToTime(time);
+  const chart_options = {
+    maintainAspectRatio: false,
+    responsive: false,
+    elements: {
+      arc: {
+        borderWidth: 0,
+      },
+    },
+    legend: {
+      display: false,
+    },
+    pieceLabel: {
+      render: "label",
+      fontSize: 25,
+    },
+  };
+
+  const handleChange = (e: any) => {
+    setTime(Number(e.target.value));
+    mtime = Number(e.target.value) * 1000;
+  };
+
+  const curTime = secToTime(time);
   const finTime = secToTime(endtime);
 
-  
-  const showTime=(time:Time)=>{
-    return(
-      <span>{toTwoDigit(time.hour)}:{toTwoDigit(time.minute)}:{toTwoDigit(time.second)}</span>
-    )
-  }
+  const showTime = (time: Time) => {
+    return (
+      <span>
+        {toTwoDigit(time.hour)}:{toTwoDigit(time.minute)}:
+        {toTwoDigit(time.second)}
+      </span>
+    );
+  };
   return (
     <div>
-    <div className={Style.bottoms}>
-      <div className={Style.timebar}>
-        <input type="range" id="volume" name="volume" min="0" max={endtime} value={ time } onChange={handleChange} />
-        <p>{showTime(curTime)}/{showTime(finTime)}</p>
-      </div>
-      <div className={Style.container}>
-        <span />
-        <div className={Style.backHome}>
-          <button className={Style.button_2} onClick={handleOnClickBackHome}>
-            ＜
-          </button>
+      <div className={Style.bottoms}>
+        <div className={Style.timebar}>
+          <input
+            type="range"
+            id="volume"
+            name="volume"
+            min="0"
+            max={endtime}
+            value={time}
+            onChange={handleChange}
+          />
+          <p>
+            {showTime(curTime)}/{showTime(finTime)}
+          </p>
         </div>
+        <div className={Style.container}>
+          <span />
+          <div className={Style.backHome}>
+            <button className={Style.button_2} onClick={handleOnClickBackHome}>
+              ＜
+            </button>
+          </div>
 
-        <span />
+          <span />
 
-        <div className={Style.stamps}>
-          {stamps.map(({ stamp_id, img_url, text }) => {
-            return (
-              <div className={Style.wrapper}>
-                <button
-                  className={Style.button}
-                  onClick={() => handleOnClickStamp(stamp_id)}
-                >
-                  {text}
-
-                </button>
-              </div>
-            );
-          })}
-          <canvas ref={canvasRef} className={Style.canvas} />
+          <div className={Style.stamps}>
+            {stamps.map(({ stamp_id, text }) => {
+              return (
+                <div className={Style.wrapper}>
+                  <button
+                    className={Style.button}
+                    onClick={() => handleOnClickStamp(stamp_id)}
+                  >
+                    {text}
+                  </button>
+                </div>
+              );
+            })}
+            <canvas ref={canvasRef} className={Style.canvas} />
+          </div>
         </div>
-      </div>
       </div>
 
       <div className={Style.chart}>
         <Pie data={data} options={chart_options} width={300} height={300} />
       </div>
-
     </div>
-    
-    
-
   );
 };
 

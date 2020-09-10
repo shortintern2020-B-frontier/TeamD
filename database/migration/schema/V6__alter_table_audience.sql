@@ -1,0 +1,1 @@
+ALTER TABLE audience ADD PRIMARY KEY (ellapsed_time, room_id);

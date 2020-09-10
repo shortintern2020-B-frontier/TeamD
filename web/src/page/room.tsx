@@ -6,11 +6,12 @@ import Canvas from "../components/canvas";
 
 import Style from "../css/room.module.css";
 
-
 const Room = (): JSX.Element => {
   const { id } = useParams();
 
   const [isShowOverlay, setIsShowOverlay] = useState(false);
+  const [stampDatas, setStampDatas] = useState([] as { stamp_id: number }[]);
+  const [AudienceSize, setAudienceSize] = useState(0);
 
   const handleOnMouseEnter = () => {
     setIsShowOverlay(true);
@@ -19,12 +20,19 @@ const Room = (): JSX.Element => {
     }, 2000);
   };
 
+  console.log(AudienceSize);
+
   return (
     <>
       <div className={Style.container} onMouseEnter={handleOnMouseEnter}>
-        <Canvas />
+        <Canvas stampDatas={stampDatas} />
       </div>
-      <Overlay />
+
+      <Overlay
+        stampDatas={stampDatas}
+        setStampDatas={setStampDatas}
+        setAudienceSize={setAudienceSize}
+      />
     </>
   );
 };
