@@ -4,6 +4,7 @@ import { Route, Switch, Redirect, BrowserRouter } from "react-router-dom";
 
 import HomePage from "./page/home";
 import Room from "./page/room";
+import AuthorPage from "./page/author";
 import { PageRoutePath } from "./routes";
 
 function App() {
@@ -16,6 +17,9 @@ function App() {
           </Route>
           <Route exact path={PageRoutePath.Room}>
             <Room />
+          </Route>
+          <Route exact path={PageRoutePath.Author}>
+            <AuthorPage />
           </Route>
         </Switch>
       </BrowserRouter>

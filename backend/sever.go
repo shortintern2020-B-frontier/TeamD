@@ -48,6 +48,14 @@ func (s *Server) Run(port int) {
 
 func (s *Server) Route() *mux.Router {
 	r := mux.NewRouter()
+
+	r.Methods(http.MethodOptions).HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, access-control-allow-origin")
+		w.WriteHeader(http.StatusOK)
+	})
+
 	r.Methods(http.MethodGet).Path("/ping").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
         w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.WriteHeader(http.StatusOK)
@@ -71,10 +79,12 @@ func (s *Server) Route() *mux.Router {
 	r.Methods(http.MethodGet).Path("/api/room/{room_id}/feeling").Queries("ellapsed_time", "{[0-9]+?}").Handler(AppHandler{stamp_controller.FindStamps})
 	
 	audienceController := controller.NewAudience(s.db)
-	r.Methods(http.MethodGet).Path("/api/room/{room_id}/audience").Queries("ellapsed_time", "{[0-9]+?}").Handler(AppHandler{audienceController.FindAudience})
+	r.Methods(http.MethodGet).Path("/api/room/{room_id:[0-9]+}/audience").Queries("ellapsed_time", "{[0-9]+?}").Handler(AppHandler{audienceController.FindAudience})
+
+	r.Methods(http.MethodPost).Path("/api/room/{room_id:[0-9]+}/audience").Handler(AppHandler{audienceController.UpdateAudience})
 
 	info_controller := controller.NewRoomInfo(s.db)
-  r.Methods(http.MethodGet).Path("/api/room/{room_id}").Handler(AppHandler{info_controller.ShowRoomInfo})
+    r.Methods(http.MethodGet).Path("/api/room/{room_id}").Handler(AppHandler{info_controller.ShowRoomInfo})
 	return r
 
 }
