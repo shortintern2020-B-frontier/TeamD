@@ -48,16 +48,13 @@ class CanvasDrawing {
     this.context = context;
     this.stampContext = stampContext;
     this.stamps = [] as Stamps[];
-    // this.drawStage();
     this.showStampFromPeople();
   }
 
   addPeople = (): void => {
     const targetPosition = this.searchEmptyCell();
-    console.log(targetPosition);
     if (!targetPosition) return;
     const { x, y } = targetPosition;
-    console.log(targetPosition);
     const newVram = this.vram.map((horizontalCells, i) =>
       horizontalCells.map((cell, l) => {
         if (cell.filled) return { ...cell, filled: true };
@@ -65,6 +62,7 @@ class CanvasDrawing {
         return { ...cell, filled: false };
       })
     );
+
     this.vram = newVram;
 
     this.drawPeople();
@@ -177,8 +175,7 @@ class CanvasDrawing {
     const text = stamps.filter(({ stamp_id }) => stamp_id === id)[0]?.text;
     const { x, y } = targetPosition;
     const left = window.innerWidth - this.cell.width * x;
-    console.log(left);
-    const top = window.innerHeight - this.cell.height * y;
+    const top = window.innerHeight - this.cell.height * (y + 1);
     this.stamps.push({ x: left, y: top, text, opacity: 1 });
   };
 }
@@ -215,15 +212,13 @@ const Canvas = ({ stampDatas, AudienceSize }: Canvas) => {
       contextStamp,
       stageHeight
     );
-    setCanvasDrawing(newCanvasDrawing);
-
-    if (!canvasDrawing) return;
 
     const repeatAddPeople = AudienceSize === 0 ? 5 : AudienceSize;
 
     for (let i = 0; i < repeatAddPeople; i++) {
-      canvasDrawing.addPeople();
+      newCanvasDrawing.addPeople();
     }
+    setCanvasDrawing(newCanvasDrawing);
   }, [windowSize, AudienceSize]);
 
   useEffect(() => {
@@ -239,17 +234,6 @@ const Canvas = ({ stampDatas, AudienceSize }: Canvas) => {
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  const handleOnClickCanvas = (
-    e: React.MouseEvent<HTMLCanvasElement, MouseEvent>
-  ) => {
-    if (!canvasDrawing) return;
-    const randomValues = { max: stamps.length, min: 1 };
-    const ramdomId = Math.floor(
-      Math.random() * (randomValues.max - randomValues.min) + randomValues.min
-    );
-    canvasDrawing.setStamp(ramdomId);
-  };
 
   return (
     <>
@@ -267,19 +251,6 @@ const Canvas = ({ stampDatas, AudienceSize }: Canvas) => {
         }}
         src={DummyPeople}
       />
-      {/* <img
-        src={IconStadium}
-        alt=""
-        style={{
-          width: "100vw",
-          height: "90vh",
-          transform: "perspective(.6em) rotateX(0.75deg)",
-          transformOrigin: "left right",
-          position: "fixed",
-          top: 0,
-          left: 0,
-        }}
-      /> */}
       <canvas
         ref={canvasRef}
         width={window.innerWidth}
@@ -300,7 +271,6 @@ const Canvas = ({ stampDatas, AudienceSize }: Canvas) => {
           height: "calc(100vh - 80px)",
           width: "100%",
         }}
-        onClick={handleOnClickCanvas}
       />
     </>
   );
