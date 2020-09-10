@@ -141,9 +141,14 @@ class CanvasDrawing {
 interface Overlay {
   stampDatas: { stamp_id: number }[];
   setStampDatas: (arg1: { stamp_id: number }[]) => void;
+  setAudienceSize: (arg1: number) => void;
 }
 
-const Overlay = ({ stampDatas, setStampDatas }: Overlay): JSX.Element => {
+const Overlay = ({
+  stampDatas,
+  setStampDatas,
+  setAudienceSize,
+}: Overlay): JSX.Element => {
   const [stamp, setStamp] = useState({} as Stamp);
   const [time, setTime] = useState(0);
   const [canvasDrawing, setCanvasDrawing] = useState<CanvasDrawing>();
@@ -180,12 +185,11 @@ const Overlay = ({ stampDatas, setStampDatas }: Overlay): JSX.Element => {
     headers.append("Content-Type", "application/json");
     headers.append("Accept", "application/json");
     headers.append("Access-Control-Allow-Origin", "http://localhost:1996");
-    // headers.append("Access-Control-Allow-Credentials", "true");
-    // headers.append(
-    //   "Access-Control-Allow-Headers",
-    //   "X-Requested-With, Content-Type, Authorization, Origin, Accept"
-    // );
-
+    /* headers.append("Access-Control-Allow-Credentials", "true");
+    headers.append(
+      "Access-Control-Allow-Headers",
+      "X-Requested-With, Content-Type, Authorization, Origin, Accept"
+    ); */
     const options: RequestInit = {
       headers: headers,
       method: "POST",
@@ -193,10 +197,10 @@ const Overlay = ({ stampDatas, setStampDatas }: Overlay): JSX.Element => {
       mode: "cors",
     };
 
-    const res = await fetch(
+    /* const res = await fetch(
       `http://localhost:1996/api/room/${id}/feeling`,
       options
-    );
+    ); */
   };
 
   const getStampDatas = async () => {
@@ -204,27 +208,56 @@ const Overlay = ({ stampDatas, setStampDatas }: Overlay): JSX.Element => {
     headers.append("Content-Type", "application/json");
     headers.append("Accept", "application/json");
     headers.append("Access-Control-Allow-Origin", "http://localhost:1996");
-    // headers.append("Access-Control-Allow-Credentials", "true");
-    // headers.append(
-    //   "Access-Control-Allow-Headers",
-    //   "X-Requested-With, Content-Type, Authorization, Origin, Accept"
-    // );
+    /* headers.append("Access-Control-Allow-Credentials", "true");
+    headers.append(
+      "Access-Control-Allow-Headers",
+      "X-Requested-With, Content-Type, Authorization, Origin, Accept"
+    ); */
 
     const options: RequestInit = {
       headers: headers,
       method: "GET",
       mode: "cors",
     };
-
     const res = await fetch(
       `http://localhost:1996/api/room/${id}/feeling?ellapsed_time=${time}`,
       options
     );
+
     if (res.status === 200) {
       const json = await res.json();
       setStampDatas(json);
     } else {
       setStampDatas([] as { stamp_id: number }[]);
+    }
+  };
+
+  const getAudienceSize = async () => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Accept", "application/json");
+    headers.append("Access-Control-Allow-Origin", "http://localhost:1996");
+    /* headers.append("Access-Control-Allow-Credentials", "true");
+    headers.append(
+      "Access-Control-Allow-Headers",
+      "X-Requested-With, Content-Type, Authorization, Origin, Accept"
+    ); */
+    const options: RequestInit = {
+      headers: headers,
+      method: "GET",
+      mode: "no-cors",
+    };
+
+    const res = await fetch(
+      `http://localhost:1996/api/room/${id}/audience?ellapsed_time=${mtime}`,
+      options
+    );
+
+    if (res.status === 200) {
+      const { audience } = await res.json();
+      setAudienceSize(audience);
+    } else {
+      setAudienceSize(0);
     }
   };
 
@@ -264,6 +297,9 @@ const Overlay = ({ stampDatas, setStampDatas }: Overlay): JSX.Element => {
           return acc;
         }, Array(6).fill(0))
       );
+    }
+    if (mtime % 60000 == 0) {
+      getAudienceSize();
     }
   }, interval);
 
