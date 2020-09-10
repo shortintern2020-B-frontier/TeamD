@@ -20,14 +20,14 @@ const Room = (): JSX.Element => {
     }, 2000);
   };
 
-  console.log(AudienceSize);
-
   return (
     <>
       <div className={Style.container} onMouseEnter={handleOnMouseEnter}>
-        <Canvas stampDatas={stampDatas} />
+        <Canvas stampDatas={stampDatas} AudienceSize={AudienceSize} />
       </div>
+
       <Overlay
+        stampDatas={stampDatas}
         setStampDatas={setStampDatas}
         setAudienceSize={setAudienceSize}
       />
