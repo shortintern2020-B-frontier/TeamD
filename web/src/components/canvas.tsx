@@ -124,12 +124,22 @@ class CanvasDrawing {
   searchEmptyCell = () => {
     const emptyCells = this.vram
       .map((horizontalCells, y) =>
-        horizontalCells.map((cell, x) => (!cell.filled ? { x, y } : undefined))
+        horizontalCells.map((cell, x) => ({ x, y, filled: cell.filled }))
       )
       .flat()
-      .filter(Boolean);
+      .filter(({ filled }) => !filled);
 
-    return emptyCells[0];
+    const aryMin = (
+      a: { x: number; y: number; filled: boolean },
+      b: { x: number; y: number; filled: boolean }
+    ) => (a.y < b.y ? a : b);
+    const minYPositon = emptyCells.reduce(aryMin).y;
+
+    console.log(minYPositon);
+
+    const minYCells = emptyCells.filter((cell, y) => cell.y === minYPositon);
+
+    return this.randomlyGetValuesFromArray(minYCells);
   };
 
   searchFilledCell = () => {
