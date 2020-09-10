@@ -1,3 +1,11 @@
 .itemText {
     color:white;
+    /* font-family:"Yu Gothic"; */
+    text-overflow: ellipsis;
+    font-weight: bold;
+    
+}
+
+.container{
+    padding-top: 50px;
 }

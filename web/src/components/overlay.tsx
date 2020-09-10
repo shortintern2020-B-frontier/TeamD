@@ -2,6 +2,7 @@ import { Pie } from "react-chartjs-2";
 import React, { useState, useRef, useEffect } from "react";
 import { useParams, Link, useHistory } from "react-router-dom";
 import "chart.piecelabel.js";
+import axios from "axios";
 
 import Style from "../css/overlay.module.css";
 import useInterval from "use-interval";
@@ -16,7 +17,6 @@ interface Time {
   minute: number;
   second: number;
 }
-const endtime = 40000;
 let mtime = 0;
 
 const toTwoDigit = (num: number): String => {
@@ -37,36 +37,26 @@ const secToTime = (secTime: number): Time => {
 const stamps = [
   {
     stamp_id: 1,
-    img_url: "https://emojis.wiki/emoji-pics/apple/clapping-hands-apple.png",
     text: "👏",
   },
   {
     stamp_id: 2,
-    img_url:
-      "https://i.pinimg.com/originals/71/ea/47/71ea470cde8de51e87e9c84d0a0bf7f9.png",
     text: "😡",
   },
   {
     stamp_id: 3,
-    img_url:
-      "https://pics.prcm.jp/7fbe179d932a9/83247844/png/83247844_220x220.png",
     text: "💕",
   },
   {
     stamp_id: 4,
-    img_url:
-      "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/apple/114/multiple-musical-notes_1f3b6.png",
     text: "🎶",
   },
   {
     stamp_id: 5,
-    img_url:
-      "https://i.pinimg.com/originals/81/46/85/8146853e8ea68e606571fa8af44ca65c.png",
     text: "😱",
   },
   {
     stamp_id: 6,
-    img_url: "https://www.emojiall.com/images/120/apple/1f97a.png",
     text: "🥺",
   },
 ];
@@ -213,13 +203,19 @@ const get = async (url: string) => {
 };
 
 interface Overlay {
+  stampDatas: { stamp_id: number }[];
   setStampDatas: (arg1: { stamp_id: number }[]) => void;
   setAudienceSize: (arg1: number) => void;
 }
 
-const Overlay = ({ setStampDatas, setAudienceSize }: Overlay): JSX.Element => {
+const Overlay = ({
+  stampDatas,
+  setStampDatas,
+  setAudienceSize,
+}: Overlay): JSX.Element => {
   const [stamp, setStamp] = useState({} as Stamp);
   const [time, setTime] = useState(0);
+  const [endtime, setEndtime] = useState<number>(0);
   const [canvasDrawing, setCanvasDrawing] = useState<CanvasDrawing>();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { id } = useParams();
@@ -235,6 +231,7 @@ const Overlay = ({ setStampDatas, setAudienceSize }: Overlay): JSX.Element => {
 
   useEffect(() => {
     mtime = 0;
+    getEndTime();
   }, []);
 
   const handleOnClickBackHome = () => {
@@ -266,6 +263,18 @@ const Overlay = ({ setStampDatas, setAudienceSize }: Overlay): JSX.Element => {
     }
   };
 
+  const getEndTime = async () => {
+    //fetchだとこけるので、axiosでやりました。
+    const url = `http://localhost:1996/api/room/${id}`;
+    const res = await axios.get(url);
+
+    if (res.status === 200) {
+      setEndtime(res.data.end_time / 1000);
+    } else {
+      console.log("err=>", res);
+    }
+  };
+
   const getAudienceSize = async () => {
     const res = await get(
       `http://localhost:1996/api/room/${id}/audience?ellapsed_time=${mtime}`
@@ -287,17 +296,84 @@ const Overlay = ({ setStampDatas, setAudienceSize }: Overlay): JSX.Element => {
   };
 
   const interval = 50;
+  // written by Akari Ushiyama,Koichiro Ueki
+  const [stampId, setStampId] = useState(Array(6).fill(1));
+  const [stampHistory, setStampHistory] = useState(
+    [] as { stamp_id: number }[][]
+  );
+
+  const interval = 500;
+    
   useInterval(() => {
     mtime += interval;
     if (mtime / 1000 - time >= 1) {
       setTime(time + 1);
       getStampDatas();
+
+      if (stampDatas.length == 0) {
+        return;
+      }
+
+      const arr = [...stampHistory, stampDatas];
+      if (arr.length > 10) {
+        arr.shift();
+      }
+      setStampHistory(arr);
+
+      if (stampHistory.length == 0) {
+        return;
+      }
+
+      setStampId(
+        stampHistory.reduce((acc, stampData: { stamp_id: number }[]) => {
+          stampData.forEach(({ stamp_id }) => {
+            if (0 < stamp_id && stamp_id < 7) {
+              acc[stamp_id - 1] += 1;
+            }
+          });
+          return acc;
+        }, Array(6).fill(0))
+      );
     }
     if (mtime % 60000 == 0) {
       getAudienceSize();
       postExistAudience();
     }
   }, interval);
+
+  const data = {
+    labels: ["👏", "😡", "💕", "🎶", "😱", "🥺"],
+    datasets: [
+      {
+        data: stampId,
+        backgroundColor: [
+          "#feca57",
+          "#ff6b6b",
+          "#ff9ff3",
+          "#00d2d3",
+          "#5f27cd",
+          "#54a0ff",
+        ],
+      },
+    ],
+  };
+
+  const chart_options = {
+    maintainAspectRatio: false,
+    responsive: false,
+    elements: {
+      arc: {
+        borderWidth: 0,
+      },
+    },
+    legend: {
+      display: false,
+    },
+    pieceLabel: {
+      render: "label",
+      fontSize: 25,
+    },
+  };
 
   const handleChange = (e: any) => {
     setTime(Number(e.target.value));
@@ -343,7 +419,7 @@ const Overlay = ({ setStampDatas, setAudienceSize }: Overlay): JSX.Element => {
           <span />
 
           <div className={Style.stamps}>
-            {stamps.map(({ stamp_id, img_url, text }) => {
+            {stamps.map(({ stamp_id, text }) => {
               return (
                 <div className={Style.wrapper}>
                   <button

@@ -25,7 +25,9 @@ const Room = (): JSX.Element => {
       <div className={Style.container} onMouseEnter={handleOnMouseEnter}>
         <Canvas stampDatas={stampDatas} AudienceSize={AudienceSize} />
       </div>
+
       <Overlay
+        stampDatas={stampDatas}
         setStampDatas={setStampDatas}
         setAudienceSize={setAudienceSize}
       />

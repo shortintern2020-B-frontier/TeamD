@@ -19,11 +19,11 @@ const RoomThumnail:React.FC<Props>=({room})=>{
   const [imgSrc,setImgSrc] = useState(room.image_url);
   
   return(
-          <div>
+          <div className={styles.container}>
             <Link className={styles.itemText} to={"/room/"+room.room_id}>
-              <img src={imgSrc} width="300" height="300" alt="new" onError={()=>{setImgSrc(default_thumnail)}}/>
-              <div className={styles.itemText}>{room.title} </div>
+              <img src={imgSrc} width="200" height="200" alt="new" onError={()=>{setImgSrc(default_thumnail)}}/>
             </Link>
+            <div className={styles.itemText}><p>{room.title}</p> </div>
           </div>
   );
 }
