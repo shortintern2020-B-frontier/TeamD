@@ -11,10 +11,11 @@ const Sidebar = () =>{
                 <div className={Style.sidenav}>
                     <a href="#"><FiFilm /></a>
                     <a href="#"><FiSettings /></a>
+                    <a href="#" className={Style.exitIcon}><FiLogOut /></a>
                     <Link to={"/author"}><FiBook/></Link>
                     <br/>
                     <br/>
-                    <a href="#"><FiLogOut /></a>
+                    <a href="#" className={Style.exitIcon}><FiLogOut /></a>
                 </div>
             </section>
         </div>
