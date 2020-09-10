@@ -135,8 +135,6 @@ class CanvasDrawing {
     ) => (a.y < b.y ? a : b);
     const minYPositon = emptyCells.reduce(aryMin).y;
 
-    console.log(minYPositon);
-
     const minYCells = emptyCells.filter((cell, y) => cell.y === minYPositon);
 
     return this.randomlyGetValuesFromArray(minYCells);
