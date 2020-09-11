@@ -255,21 +255,18 @@ const Canvas = ({ stampDatas, AudienceSize }: Canvas) => {
 
   return (
     <>
-      <img
-        width={window.innerWidth}
-        height={window.innerHeight}
+      <div
         style={{
           position: "fixed",
-          top: "-220px",
-          left: "-5vw",
+          top: 0,
+          left: 0,
           height: "100vh",
-          width: "110vw",
-          transform: "perspective(.6em) rotateX(0.1deg) scaleY(1.2)",
-          transformOrigin: "left right",
+          width: "100vw",
+          backgroundImage: `url(${imgSrcForDemo})`,
+          backgroundPosition: "center center",
+          backgroundSize: "cover",
         }}
-        src={imgSrcForDemo}
-        alt=""
-      />
+      ></div>
       <canvas
         ref={canvasRef}
         width={window.innerWidth}
