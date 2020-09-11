@@ -1,3 +1,4 @@
+//Written by Taishi Hosokawa
 package model
 
 type Feeling struct {

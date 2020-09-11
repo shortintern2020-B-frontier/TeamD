@@ -1,9 +1,10 @@
+// this file written by seito hirai
 import React, { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import BackgroundFootball from "../assets/22432-min.jpg";
 import BackgroundBaseball from "../assets/AdobeStock_119546055-min.jpeg";
-import BackgroundHall from "../assets/1141061_m-min.jpg";
+import BackgroundHall from "../assets/Thubmbnail_ebiabokado.jpg";
 import Avatar2 from "../assets/IMG_7938.png";
 import Avatar3 from "../assets/IMG_7940.png";
 import Avatar4 from "../assets/IMG_7947.png";

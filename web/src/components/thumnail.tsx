@@ -1,3 +1,4 @@
+//Author: Ueki
 import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import styles from "../css/thumnailGrid.module.css";

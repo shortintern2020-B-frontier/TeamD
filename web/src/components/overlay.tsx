@@ -19,10 +19,11 @@ interface Time {
 }
 let mtime = 0;
 
+// the function written by Ueki
 const toTwoDigit = (num: number): String => {
   return ("0" + num).slice(-2);
 };
-
+// the function written by Ueki
 const secToTime = (secTime: number): Time => {
   const sec = secTime % 60;
   secTime = Math.floor(secTime / 60);
@@ -67,6 +68,7 @@ interface Stamps {
   text: string;
 }
 
+// the class in next line is written by seito hirai
 class CanvasDrawing {
   private context: CanvasRenderingContext2D;
   private vram: number[];
@@ -132,6 +134,7 @@ class CanvasDrawing {
   };
 }
 
+// the function in next line is written by seito hirai
 const post = async <T extends unknown>(data: T, url: string) => {
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
@@ -147,6 +150,7 @@ const post = async <T extends unknown>(data: T, url: string) => {
   await fetch(url, options);
 };
 
+// the function in next line is written by seito hirai
 const get = async (url: string) => {
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
@@ -223,6 +227,7 @@ const Overlay = ({
     }
   };
 
+  // the function in next line is written by Ueki
   const getEndTime = async () => {
     //fetchだとこけるので、axiosでやりました。
     const url = `http://localhost:1996/api/room/${id}`;
@@ -334,6 +339,7 @@ const Overlay = ({
     },
   };
 
+  // the function in next line is written by Ueki
   const handleChange = (e: any) => {
     setTime(Number(e.target.value));
     mtime = Number(e.target.value) * 1000;
@@ -341,7 +347,7 @@ const Overlay = ({
 
   const curTime = secToTime(time);
   const finTime = secToTime(endtime);
-
+  // the function in next line is written by Ueki
   const showTime = (time: Time) => {
     return (
       <span>

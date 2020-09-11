@@ -1,3 +1,4 @@
+// Written by Taishi Hosokawa
 package repository
 
 import (
@@ -9,7 +10,7 @@ import (
 )
 
 // return audience.count
-func FindAudience (db *sqlx.DB, id, ellapsed_time int) (*model.Audience, error) {
+func FindAudience(db *sqlx.DB, id, ellapsed_time int) (*model.Audience, error) {
 	var audience model.Audience
 	if err := db.Get(&audience, `
 	SELECT count FROM audience WHERE room_id = ? AND ellapsed_time = ?
@@ -19,7 +20,7 @@ func FindAudience (db *sqlx.DB, id, ellapsed_time int) (*model.Audience, error) 
 	return &audience, nil
 }
 
-func CreateAudience (db *sqlx.DB, room_id, ellapsed_time int) (result sql.Result, err error) {
+func CreateAudience(db *sqlx.DB, room_id, ellapsed_time int) (result sql.Result, err error) {
 	stmt, err := db.Prepare(`
 	INSERT INTO audience (room_id, ellapsed_time, count) VALUES (?, ?, ?)
 	`)
@@ -34,7 +35,7 @@ func CreateAudience (db *sqlx.DB, room_id, ellapsed_time int) (result sql.Result
 	return stmt.Exec(room_id, ellapsed_time, 1)
 }
 
-func UpdateAudience (db *sqlx.DB, count, room_id, ellapsed_time int) (result sql.Result, err error) {
+func UpdateAudience(db *sqlx.DB, count, room_id, ellapsed_time int) (result sql.Result, err error) {
 	stmt, err := db.Prepare(`
 	UPDATE audience SET count = ? WHERE room_id = ? AND ellapsed_time = ?
 	`)

@@ -7,6 +7,7 @@ import Room from "./page/room";
 import AuthorPage from "./page/author";
 import { PageRoutePath } from "./routes";
 
+// the function in next line is written by seito hirai
 function App() {
   return (
     <div className="App">

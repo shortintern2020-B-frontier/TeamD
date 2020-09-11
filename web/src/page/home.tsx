@@ -18,7 +18,7 @@ const HomePage = () => {
   const [firstRender, setFirstRender] = useGlobalState("firstRender");
 
   const fetch_url = "http://localhost:1996/api/room";
-
+  // the function written by Ueki
   const fetchRooms = async () => {
     const result = await axios.get(fetch_url);
     if (result.status === 200) {
@@ -40,6 +40,7 @@ const HomePage = () => {
     // eslint-disable-next-line
   }, []);
 
+  // the function written by Ueki and Furukawa
   return (
     <div>
       <div className={styles.logContainer}>

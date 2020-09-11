@@ -1,3 +1,4 @@
+// Written by Taishi Hosokawa
 // audience model
 package model
 

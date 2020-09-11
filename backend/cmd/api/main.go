@@ -8,6 +8,7 @@ import (
 	server "github.com/shortintern2020-B-frontier/TeamD" // need to change
 )
 
+// Written by Taishi Hosokawa
 func main() {
 	var databaseDatasource string
 	var port int
